@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Jugador : Personaje {
 
+	// Se usa para evitar el movimiento en diagonal
 	private bool teclaPulsada = false;
 	
 	// Update is called once per frame

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Personaje : MonoBehaviour {
 
-	public const float VelocidadDefecto = 3.0f;
+	public const float VelocidadDefecto = 6.0f;
 
 	protected int x;
 	public int X {
