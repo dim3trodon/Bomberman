@@ -104,6 +104,7 @@ public class Escenario : MonoBehaviour {
 			}
 		}
 		// Reservar ciertas casillas para que el jugador no quede atrapado
+		// al principio del juego
 		ReservarCasillasParaJugador();
 
 		matrizParedesYCajas[Alto - 1] = FilPared;
@@ -122,7 +123,6 @@ public class Escenario : MonoBehaviour {
 	}
 
 	public static bool HayObstaculo(int x, int z) {
-		Debug.Log ("Hay un " + matrizParedesYCajas[x][z] + " en " + x + ", " + z);
 		return matrizParedesYCajas[x][z] == Vacio ? false : true;
 	}
 
@@ -140,21 +140,14 @@ public class Escenario : MonoBehaviour {
 		for(int i = 0; i < matrizParedesYCajas.Length; i++) {
 			int[] fila = matrizParedesYCajas[i];
 			if(fila != null) {
-				string imp = "";
 				for(int j = 0; j < fila.Length; j++) {
-
 					if(fila[j] == Pared) {
 						InstanciarPared(j, i);
-						imp += "1";
 					}
 					else if(fila[j] == Caja) {
 						InstanciarCaja(j, i);
-						imp += "C";
-					} else {
-						imp += "0";
 					}
 				}
-				//Debug.Log(imp);
 			}
 		}
 	}
