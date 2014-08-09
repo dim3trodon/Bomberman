@@ -13,17 +13,41 @@ public class Escenario : MonoBehaviour {
 	public const int Pared = 1;
 	public const int Caja = 2;
 
-	public const float ProbCaja = 0.34f;
+	public const float ProbCaja = 0.47f;
 
 	private int[][] matrizTablero = new int[Ancho][];
 
 	// Filas constantes
 	// Una fila llena de paredes
 	private int[] filPared;
+	private int[] FilPared {
+		get {
+			return (int[]) filPared.Clone();
+		}
+		set {
+			filPared = value;
+		}
+	}
 	// Una fila con paredes en las posiciones pares
 	private int[] filParedPar;
+	private int[] FilParedPar {
+		get {
+			return (int[]) filParedPar.Clone();
+		}
+		set {
+			FilParedPar = value;
+		}
+	}
 	// Una fila con paredes al principio y al final
 	private int[] filParedPrinFinal;
+	private int[] FilParedPrinFinal {
+		get {
+			return (int[]) filParedPrinFinal.Clone();
+		}
+		set {
+			filParedPrinFinal = value;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -50,16 +74,16 @@ public class Escenario : MonoBehaviour {
 
 	private void InicializarMatriz() {
 		// Rellenar matriz
-		matrizTablero[0] = (int[]) filPared.Clone();
+		matrizTablero[0] = FilPared;
 		for(int i = 1; i < Alto - 1; i++) {
 			// En las filas pares poner paredes cada dos casillas
 			if((i % 2 == 0)) {
-				matrizTablero[i] = (int[]) filParedPar.Clone();
+				matrizTablero[i] = FilParedPar;
 			}
 			// En las impares, poner solo una al principio y otra
 			// al final
 			else {
-				matrizTablero[i] = (int[]) filParedPrinFinal.Clone();
+				matrizTablero[i] = FilParedPrinFinal;
 			}
 			// Poner cajas aleatoriamente
 			for(int j = 1; j < Ancho - 1; j++) {
@@ -71,7 +95,7 @@ public class Escenario : MonoBehaviour {
 		// Reservar ciertas casillas para que el jugador no quede atrapado
 		ReservarCasillasParaJugador();
 
-		matrizTablero[Alto - 1] = (int[]) filPared.Clone();
+		matrizTablero[Alto - 1] = FilPared;
 	}
 
 	private void ReservarCasillasParaJugador() {
@@ -97,13 +121,13 @@ public class Escenario : MonoBehaviour {
 	}
 
 	private void RellenarTablero() {
-		// Rellenar tablero
 		for(int i = 0; i < matrizTablero.Length; i++) {
 			int[] fila = matrizTablero[i];
 			if(fila != null) {
 				for(int j = 0; j < fila.Length; j++) {
-					if(fila[j] == Pared)
+					if(fila[j] == Pared) {
 						InstanciarPared(j, i);
+					}
 					else if(fila[j] == Caja) {
 						InstanciarCaja(j, i);
 					}
