@@ -15,7 +15,8 @@ public class Escenario : MonoBehaviour {
 
 	public const float ProbCaja = 0.47f;
 
-	private int[][] matrizTablero = new int[Ancho][];
+	// Matriz donde se guarda la posicion de paredes y cajas
+	private static int[][] matrizParedesYCajas = new int[Ancho][];
 
 	// Filas constantes
 	// Una fila llena de paredes
@@ -49,12 +50,22 @@ public class Escenario : MonoBehaviour {
 		}
 	}
 
+	private Personaje jugador;
+
 	// Use this for initialization
 	void Start () {
 		Random.seed = (int)System.DateTime.Now.Ticks;
 		InicializarFilasConstantes();
 		InicializarMatriz();
 		RellenarTablero();
+		InstanciarJugador();
+	}
+
+	private void InstanciarJugador() {
+		GameObject.Instantiate(Resources.Load("Prefabs/Jugador"), 
+		                       GetPosicionReal(1, 1), Quaternion.identity);
+		jugador = GameObject.Find("Jugador(Clone)").GetComponent<Personaje>();
+		jugador.SetPosicionInicial(1, 1);
 	}
 
 	private void InicializarFilasConstantes() {
@@ -74,40 +85,45 @@ public class Escenario : MonoBehaviour {
 
 	private void InicializarMatriz() {
 		// Rellenar matriz
-		matrizTablero[0] = FilPared;
+		matrizParedesYCajas[0] = FilPared;
 		for(int i = 1; i < Alto - 1; i++) {
 			// En las filas pares poner paredes cada dos casillas
 			if((i % 2 == 0)) {
-				matrizTablero[i] = FilParedPar;
+				matrizParedesYCajas[i] = FilParedPar;
 			}
 			// En las impares, poner solo una al principio y otra
 			// al final
 			else {
-				matrizTablero[i] = FilParedPrinFinal;
+				matrizParedesYCajas[i] = FilParedPrinFinal;
 			}
 			// Poner cajas aleatoriamente
 			for(int j = 1; j < Ancho - 1; j++) {
-				if(matrizTablero[i][j] != Pared &&  Random.value < ProbCaja) {
-					matrizTablero[i][j] = Caja;
+				if(matrizParedesYCajas[i][j] != Pared &&  Random.value < ProbCaja) {
+					matrizParedesYCajas[i][j] = Caja;
 				}
 			}
 		}
 		// Reservar ciertas casillas para que el jugador no quede atrapado
 		ReservarCasillasParaJugador();
 
-		matrizTablero[Alto - 1] = FilPared;
+		matrizParedesYCajas[Alto - 1] = FilPared;
 	}
 
 	private void ReservarCasillasParaJugador() {
-		matrizTablero[1][1] = Vacio;
-		matrizTablero[1][2] = Vacio;
-		matrizTablero[1][3] = Vacio;
-		matrizTablero[2][1] = Vacio;
-		matrizTablero[3][1] = Vacio;
+		matrizParedesYCajas[1][1] = Vacio;
+		matrizParedesYCajas[1][2] = Vacio;
+		matrizParedesYCajas[1][3] = Vacio;
+		matrizParedesYCajas[2][1] = Vacio;
+		matrizParedesYCajas[3][1] = Vacio;
 	}
 
-	public Vector3 GetPosicionReal(int x, int z) {
+	public static Vector3 GetPosicionReal(int x, int z) {
 		return new Vector3 (x - XBase, Y, ZBase - z);
+	}
+
+	public static bool HayObstaculo(int x, int z) {
+		Debug.Log ("Hay un " + matrizParedesYCajas[x][z] + " en " + x + ", " + z);
+		return matrizParedesYCajas[x][z] == Vacio ? false : true;
 	}
 
 	private void InstanciarPared(int x, int z) {
@@ -121,17 +137,24 @@ public class Escenario : MonoBehaviour {
 	}
 
 	private void RellenarTablero() {
-		for(int i = 0; i < matrizTablero.Length; i++) {
-			int[] fila = matrizTablero[i];
+		for(int i = 0; i < matrizParedesYCajas.Length; i++) {
+			int[] fila = matrizParedesYCajas[i];
 			if(fila != null) {
+				string imp = "";
 				for(int j = 0; j < fila.Length; j++) {
+
 					if(fila[j] == Pared) {
 						InstanciarPared(j, i);
+						imp += "1";
 					}
 					else if(fila[j] == Caja) {
 						InstanciarCaja(j, i);
+						imp += "C";
+					} else {
+						imp += "0";
 					}
 				}
+				//Debug.Log(imp);
 			}
 		}
 	}
