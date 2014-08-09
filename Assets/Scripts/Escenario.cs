@@ -6,14 +6,16 @@ public class Escenario : MonoBehaviour {
 	public const float Y = 0.5f;
 	public const float XBase = 9.5f;
 	public const float ZBase = 5.5f;
-	public const int ancho = 19;
-	public const int alto = 11;
+	public const int Ancho = 19;
+	public const int Alto = 11;
 
-	public const int VACIO = 0;
-	public const int PARED = 1;
-	public const int CAJA = 2;
+	public const int Vacio = 0;
+	public const int Pared = 1;
+	public const int Caja = 2;
 
-	private int[][] matrizTablero = new int[ancho][];
+	public const float ProbCaja = 0.34f;
+
+	private int[][] matrizTablero = new int[Ancho][];
 
 	// Filas constantes
 	// Una fila llena de paredes
@@ -25,6 +27,7 @@ public class Escenario : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Random.seed = (int)System.DateTime.Now.Ticks;
 		InicializarFilasConstantes();
 		InicializarMatriz();
 		RellenarTablero();
@@ -32,48 +35,78 @@ public class Escenario : MonoBehaviour {
 
 	private void InicializarFilasConstantes() {
 		// Inicializar vectores de filas constantes
-		filPared = new int[ancho];
-		filParedPar = new int[ancho];
-		filParedPrinFinal = new int[ancho];
-		for(int i = 0; i < ancho; i++) {
-			filPared[i] = PARED;
+		filPared = new int[Ancho];
+		filParedPar = new int[Ancho];
+		filParedPrinFinal = new int[Ancho];
+		for(int i = 0; i < Ancho; i++) {
+			filPared[i] = Pared;
 			if(i % 2 == 0) {
-				filParedPar[i] = PARED;
+				filParedPar[i] = Pared;
 			}
 		}
-		filParedPrinFinal[0] = PARED;
-		filParedPrinFinal[ancho - 1] = PARED;
+		filParedPrinFinal[0] = Pared;
+		filParedPrinFinal[Ancho - 1] = Pared;
 	}
 
 	private void InicializarMatriz() {
 		// Rellenar matriz
-		matrizTablero[0] = filPared;
-		for(int i = 1; i < alto - 1; i++) {
-			if((i % 2 == 0))
-				matrizTablero[i] = filParedPar;
-			else
-				matrizTablero[i] = filParedPrinFinal;
+		matrizTablero[0] = (int[]) filPared.Clone();
+		for(int i = 1; i < Alto - 1; i++) {
+			// En las filas pares poner paredes cada dos casillas
+			if((i % 2 == 0)) {
+				matrizTablero[i] = (int[]) filParedPar.Clone();
+			}
+			// En las impares, poner solo una al principio y otra
+			// al final
+			else {
+				matrizTablero[i] = (int[]) filParedPrinFinal.Clone();
+			}
+			// Poner cajas aleatoriamente
+			for(int j = 1; j < Ancho - 1; j++) {
+				if(matrizTablero[i][j] != Pared &&  Random.value < ProbCaja) {
+					matrizTablero[i][j] = Caja;
+				}
+			}
 		}
-		matrizTablero[alto - 1] = filPared;
+		// Reservar ciertas casillas para que el jugador no quede atrapado
+		ReservarCasillasParaJugador();
+
+		matrizTablero[Alto - 1] = (int[]) filPared.Clone();
 	}
 
-	Vector3 GetPosicionReal(int x, int z) {
+	private void ReservarCasillasParaJugador() {
+		matrizTablero[1][1] = Vacio;
+		matrizTablero[1][2] = Vacio;
+		matrizTablero[1][3] = Vacio;
+		matrizTablero[2][1] = Vacio;
+		matrizTablero[3][1] = Vacio;
+	}
+
+	public Vector3 GetPosicionReal(int x, int z) {
 		return new Vector3 (x - XBase, Y, ZBase - z);
 	}
 
-	void InstanciarPared(int x, int z) {
+	private void InstanciarPared(int x, int z) {
 		Vector3 posReal = GetPosicionReal(x, z);
 		GameObject.Instantiate(Resources.Load("Prefabs/Pared"), posReal, Quaternion.identity);
 	}
 
-	void RellenarTablero() {
+	private void InstanciarCaja(int x, int z) {
+		Vector3 posReal = GetPosicionReal(x, z);
+		GameObject.Instantiate(Resources.Load("Prefabs/Caja"), posReal, Quaternion.identity);
+	}
+
+	private void RellenarTablero() {
 		// Rellenar tablero
 		for(int i = 0; i < matrizTablero.Length; i++) {
 			int[] fila = matrizTablero[i];
 			if(fila != null) {
 				for(int j = 0; j < fila.Length; j++) {
-					if(fila[j] == PARED)
+					if(fila[j] == Pared)
 						InstanciarPared(j, i);
+					else if(fila[j] == Caja) {
+						InstanciarCaja(j, i);
+					}
 				}
 			}
 		}
