@@ -1,9 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Personaje.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Jugador.cs">
     <Files>
-      <File FileName="Assets\Scripts\Personaje.cs" Line="72" Column="11" />
-      <File FileName="Assets\Scripts\Escenario.cs" Line="125" Column="75" />
+      <File FileName="Assets\Scripts\Tablero.cs" Line="43" Column="19" />
+      <File FileName="Assets\Scripts\ElementoTablero.cs" Line="4" Column="38" />
+      <File FileName="Assets\Scripts\Control.cs" Line="4" Column="21" />
+      <File FileName="Assets\Scripts\Caja.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Bloque.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Casilla.cs" Line="25" Column="30" />
+      <File FileName="Assets\Scripts\Jugador.cs" Line="31" Column="44" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

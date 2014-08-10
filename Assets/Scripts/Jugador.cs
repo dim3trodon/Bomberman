@@ -27,8 +27,9 @@ public class Jugador : Personaje {
 			}
 			teclaPulsada = false;
 			if((x != xFinal) || (z != zFinal)) {
-				// Si hay un obstaculo, no moverse
-				if(Escenario.HayObstaculo(zFinal, xFinal)) {
+				// Si hay un obstaculo, no moverse (xFinal y zFinal vuelve
+				// a ser la posicion actual del jugador)
+				if(Control.HayObstaculoEn(zFinal, xFinal)) {
 					xFinal = x;
 					zFinal = z;
 				} else {

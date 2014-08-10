@@ -46,9 +46,14 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Escenario.cs" />
+     <Compile Include="Assets\Scripts\Bloque.cs" />
+     <Compile Include="Assets\Scripts\Caja.cs" />
+     <Compile Include="Assets\Scripts\Casilla.cs" />
+     <Compile Include="Assets\Scripts\Control.cs" />
+     <Compile Include="Assets\Scripts\ElementoTablero.cs" />
      <Compile Include="Assets\Scripts\Jugador.cs" />
      <Compile Include="Assets\Scripts\Personaje.cs" />
+     <Compile Include="Assets\Scripts\Tablero.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

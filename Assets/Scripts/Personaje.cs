@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Personaje : MonoBehaviour {
@@ -44,10 +44,10 @@ public class Personaje : MonoBehaviour {
 
 	protected void Lerp() {
 		float distCovered = (Time.time - horaInicio) * velocidad;
-		transform.position = Vector3.Lerp(Escenario.GetPosicionReal(x, z),
-		                                  Escenario.GetPosicionReal(xFinal, zFinal),
+		transform.position = Vector3.Lerp(Control.GetPosicionReal(x, z),
+		                                  Control.GetPosicionReal(xFinal, zFinal),
 		                                  distCovered);
-		if(transform.position == Escenario.GetPosicionReal(xFinal, zFinal)) {
+		if(transform.position == Control.GetPosicionReal(xFinal, zFinal)) {
 			x = xFinal;
 			z = zFinal;
 			moviendose = false;
