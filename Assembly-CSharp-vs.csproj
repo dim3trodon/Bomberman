@@ -51,8 +51,10 @@
      <Compile Include="Assets\Scripts\Casilla.cs" />
      <Compile Include="Assets\Scripts\Control.cs" />
      <Compile Include="Assets\Scripts\ElementoTablero.cs" />
+     <Compile Include="Assets\Scripts\ElementoTableroMovil.cs" />
      <Compile Include="Assets\Scripts\Jugador.cs" />
-     <Compile Include="Assets\Scripts\Personaje.cs" />
+     <Compile Include="Assets\Scripts\Movimiento.cs" />
+     <Compile Include="Assets\Scripts\MovimientoJugador.cs" />
      <Compile Include="Assets\Scripts\Tablero.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

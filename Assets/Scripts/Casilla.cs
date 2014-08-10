@@ -5,6 +5,10 @@ public class Casilla {
 
 	private ArrayList casilla;
 
+	public Casilla() {
+		casilla = new ArrayList();
+	}
+
 	public Casilla(ElementoTablero elemento) {
 		casilla = new ArrayList();
 		casilla.Add(elemento);
@@ -20,6 +24,28 @@ public class Casilla {
 			elemento.Destruir();
 		}
 		casilla.Clear();
+	}
+
+	public void AddElemento(ElementoTablero elemento) {
+		casilla.Add(elemento);
+	}
+
+	public void QuitarElemento(ElementoTablero elemento) {
+		int i = casilla.IndexOf(elemento);
+		Debug.Log("Casilla se quita el elemento " + i + "(" + casilla.Count + ")");
+		foreach(ElementoTablero e in casilla) {
+			if(e == elemento) {
+				Debug.Log("==");
+			} else if(e.Equals(elemento)) {
+				Debug.Log("Equals");
+			} else {
+				Debug.Log("no es igual");
+			}
+			if(e.ToString() != "Jugador") {
+				Debug.LogError(e.ToString());
+			}
+		}
+		casilla.Remove(elemento);
 	}
 
 	public bool HayObstaculo() {
