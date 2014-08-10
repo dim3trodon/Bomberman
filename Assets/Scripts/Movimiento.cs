@@ -45,11 +45,11 @@ public class Movimiento : MonoBehaviour {
 	protected bool moviendose = false;
 
 	protected int GetXTablero() {
-		return Control.GetXTablero(transform.position.x);
+		return Control.GetJTablero(transform.position.x);
 	}
 
 	protected int GetZTablero() {
-		return Control.GetZTablero(transform.position.z);
+		return Control.GetITablero(transform.position.z);
 	}
 
 	protected void MoverElemento(int x, int z) {

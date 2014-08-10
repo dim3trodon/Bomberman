@@ -35,11 +35,9 @@ public class MovimientoJugador : Movimiento {
 				// Si hay un obstaculo, no moverse (xFinal y zFinal vuelve
 				// a ser la posicion actual del jugador)
 				if(Control.HayObstaculoEn(xFinal, zFinal)) {
-					Debug.Log("No mover -------------------------------------------------");
 					xFinal = x;
 					zFinal = z;
 				} else {
-					Debug.Log("Mover ----------------------------------------------------");
 					moviendose = true;
 				}
 			}

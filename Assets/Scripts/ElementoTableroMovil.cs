@@ -8,7 +8,7 @@ public abstract class ElementoTableroMovil : ElementoTablero {
 	}
 
 	protected int GetXTablero() {
-		return Elemento.GetComponent<Movimiento>().X;//Control.GetXTablero(Elemento.transform.position.x);
+		return Elemento.GetComponent<Movimiento>().X;
 	}
 
 	protected int GetZTablero() {
@@ -16,7 +16,6 @@ public abstract class ElementoTableroMovil : ElementoTablero {
 	}
 
 	public void MoverA(int x, int z) {
-		Debug.Log("ElementoTableroMovil Mover a " + x + "; " + z + " desde " + GetXTablero() + ", " + GetZTablero());
 		Control.MoverElementoA(GetXTablero(), GetZTablero(), x, z, this);
 	}
 

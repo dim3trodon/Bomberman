@@ -32,20 +32,11 @@ public class Casilla {
 
 	public void QuitarElemento(ElementoTablero elemento) {
 		int i = casilla.IndexOf(elemento);
-		Debug.Log("Casilla se quita el elemento " + i + "(" + casilla.Count + ")");
-		foreach(ElementoTablero e in casilla) {
-			if(e == elemento) {
-				Debug.Log("==");
-			} else if(e.Equals(elemento)) {
-				Debug.Log("Equals");
-			} else {
-				Debug.Log("no es igual");
-			}
-			if(e.ToString() != "Jugador") {
-				Debug.LogError(e.ToString());
-			}
+		if(i >= 0) {
+			casilla.Remove(elemento);
+		} else {
+			Debug.LogError("No se encuentra el elemento " + elemento.ToString() + " en la casilla");
 		}
-		casilla.Remove(elemento);
 	}
 
 	public bool HayObstaculo() {

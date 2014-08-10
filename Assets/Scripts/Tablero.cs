@@ -34,13 +34,12 @@ public class Tablero {
 		tablero = new Casilla[Alto][];
 	}
 
-	public Casilla GetCasilla(int x, int z) {
-		Debug.Log("get casilla " + x + ", " + z);
-		return tablero[x][z];
+	public Casilla GetCasilla(int i, int j) {
+		return tablero[i][j];
 	}
 
-	public bool HayObstaculoEn(int x, int z) {
-		Casilla casilla = GetCasilla(x, z);
+	public bool HayObstaculoEn(int i, int j) {
+		Casilla casilla = GetCasilla(i, j);
 		return casilla == null ? false : casilla.HayObstaculo();
 	}
 
@@ -53,15 +52,15 @@ public class Tablero {
 		}
 	}
 
-	public Casilla SetCasilla(int x, int z, Casilla casilla) {
-		tablero[x][z] = casilla;
+	public Casilla SetCasilla(int i, int j, Casilla casilla) {
+		tablero[i][j] = casilla;
 		return casilla;
 	}
 
-	private void EliminarCasilla(int x, int z) {
-		if(tablero[x][z] != null) {
-			tablero[x][z].DestruirTodosElementos();
-			tablero[x][z] = null;
+	private void EliminarCasilla(int i, int j) {
+		if(tablero[i][j] != null) {
+			tablero[i][j].DestruirTodosElementos();
+			tablero[i][j] = null;
 		}
 	}
 
@@ -72,24 +71,5 @@ public class Tablero {
 		EliminarCasilla(2, 1);
 		EliminarCasilla(3, 1);
 	}
-
-	public void ImpObs() {
-		for(int i = 0; i <  tablero.Length; i++) {
-			string imp = "";
-			for(int j = 0; j < tablero[i].Length; j++) {
-				imp += (HayObstaculoEn(i, j) ? "X" : "-");
-			}
-			Debug.Log(imp);
-		}
-	}
-
-	public void Imp() {
-		for(int i = 0; i <  tablero.Length; i++) {
-			string imp = "";
-			for(int j = 0; j < tablero[i].Length; j++) {
-				imp += "[" + i + "][" + j + "] ";
-			}
-			Debug.Log(imp);
-		}
-	}
+	
 }
