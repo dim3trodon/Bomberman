@@ -198,9 +198,7 @@ public class Control : MonoBehaviour {
 		// Propagar hacia abajo
 		v = i + 1;
 		if(v < vDown && tablero.GetCasilla(v, j) == null) {
-			if(tablero.GetCasilla(v, j) == null) {
-				tablero.SetCasilla(v, j, new Casilla());
-			}
+			tablero.SetCasilla(v, j, new Casilla());
 		}
 		while((v < vDown) && (!tablero.GetCasilla(v, j).HayObstaculoIndestructible())) {
 			tablero.GetCasilla(v, j).AddElemento(new Explosion(InstanciarExplosion(v, j)));
@@ -209,6 +207,34 @@ public class Control : MonoBehaviour {
 			v++;
 			if(v < vDown && tablero.GetCasilla(v, j) == null) {
 				tablero.SetCasilla(v, j, new Casilla());
+			}
+		}
+		// Propagar hacia la izuierda
+		h = j - 1;
+		if(h >= hIzq && tablero.GetCasilla(i, h) == null) {
+			tablero.SetCasilla(i, h, new Casilla());
+		}
+		while((h >= hIzq) && (!tablero.GetCasilla(i, h).HayObstaculoIndestructible())) {
+			tablero.GetCasilla(i, h).AddElemento(new Explosion(InstanciarExplosion(i, h)));
+			casillas.Add(tablero.GetCasilla(i, h));
+			tablero.GetCasilla(i, h).DestruirCajas();
+			h--;
+			if(h >= hIzq && tablero.GetCasilla(i, h) == null) {
+				tablero.SetCasilla(i, h, new Casilla());
+			}
+		}
+		// Propagar hacia la derecha
+		h = j + 1;
+		if(h < hDer && tablero.GetCasilla(i, h) == null) {
+			tablero.SetCasilla(i, h, new Casilla());
+		}
+		while((h < hDer) && (!tablero.GetCasilla(i, h).HayObstaculoIndestructible())) {
+			tablero.GetCasilla(i, h).AddElemento(new Explosion(InstanciarExplosion(i, h)));
+			casillas.Add(tablero.GetCasilla(i, h));
+			tablero.GetCasilla(i, h).DestruirCajas();
+			h++;
+			if(h < hDer && tablero.GetCasilla(i, h) == null) {
+				tablero.SetCasilla(i, h, new Casilla());
 			}
 		}
 

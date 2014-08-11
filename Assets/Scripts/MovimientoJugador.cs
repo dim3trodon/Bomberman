@@ -11,22 +11,22 @@ public class MovimientoJugador : Movimiento {
 		if(Control.HayEnemigoEn(X, Z)) {
 			Control.FinDelJuego();
 		}else if(!moviendose) {
-			if(Input.GetKeyDown (KeyCode.Space)) {
+			if(Input.GetKey (KeyCode.Space)) {
 				Control.PonerBomba(x, z);
 				teclaPulsada = true;
-			}else if (Input.GetKeyDown (KeyCode.LeftArrow) && !teclaPulsada){
+			}else if (Input.GetKey (KeyCode.LeftArrow) && !teclaPulsada){
 				xFinal = x - 1;
 				horaInicio = Time.time;
 				teclaPulsada = true;
-			}else if ((Input.GetKeyDown (KeyCode.RightArrow) && !teclaPulsada)){
+			}else if ((Input.GetKey (KeyCode.RightArrow) && !teclaPulsada)){
 				xFinal = x + 1;
 				horaInicio = Time.time;
 				teclaPulsada = true;
-			}else if (Input.GetKeyDown (KeyCode.UpArrow) && !teclaPulsada){
+			}else if (Input.GetKey (KeyCode.UpArrow) && !teclaPulsada){
 				zFinal = z - 1;
 				horaInicio = Time.time;
 				teclaPulsada = true;
-			}else if (Input.GetKeyDown (KeyCode.DownArrow) && !teclaPulsada){
+			}else if (Input.GetKey (KeyCode.DownArrow) && !teclaPulsada){
 				zFinal = z + 1;
 				horaInicio = Time.time;
 			}
