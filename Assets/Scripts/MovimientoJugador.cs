@@ -8,7 +8,9 @@ public class MovimientoJugador : Movimiento {
 
 	// Update is called once per frame
 	void Update () {
-		if(!moviendose) {
+		if(Control.HayEnemigoEn(X, Z)) {
+			Control.FinDelJuego();
+		}else if(!moviendose) {
 			if(Input.GetKeyDown (KeyCode.Space)) {
 				Control.PonerBomba(x, z);
 				teclaPulsada = true;

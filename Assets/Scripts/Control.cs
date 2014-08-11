@@ -8,15 +8,16 @@ public class Control : MonoBehaviour {
 	public const float ZBase = 5.5f;
 	public const int Ancho = 19;
 	public const int Alto = 11;
-	public const float ProbCaja = 0f;
+	public const float ProbCaja = 0.47f;
 	public const int XInicialJugador = 1;
 	public const int ZInicialJugador = 1;
+	public const float DuracionExplosion = 0.9f;
 
 	private static Control instancia;
 
 	private static Tablero tablero;
 
-	private ElementoTableroMovil jugador;
+	private static ElementoTableroMovil jugador;
 
 	// Si llega a 0, no se pueden poner mas bombas
 	private static int bolsaBombas = 1;
@@ -42,7 +43,8 @@ public class Control : MonoBehaviour {
 	void Start () {
 		Random.seed = (int)System.DateTime.Now.Ticks;
 		InicializarTablero();
-		Casilla casillaJugador = new Casilla(new Jugador(InstanciarJugador()));
+		jugador = new Jugador(InstanciarJugador());
+		Casilla casillaJugador = new Casilla(jugador);
 		tablero.SetCasilla(XInicialJugador, ZInicialJugador, casillaJugador);
 	}
 
@@ -58,8 +60,8 @@ public class Control : MonoBehaviour {
 		Casilla[] ultimaFila = new Casilla[Ancho];
 		// Añadir primera fila
 		for(int j = 0; j < Ancho; j++) {
-			primeraFila[j] = new Casilla(new Caja(InstanciarBloque(0, j)));
-			ultimaFila[j] = new Casilla(new Caja(InstanciarBloque(Alto - 1, j)));
+			primeraFila[j] = new Casilla(new Bloque(InstanciarBloque(0, j)));
+			ultimaFila[j] = new Casilla(new Bloque(InstanciarBloque(Alto - 1, j)));
 		}
 		tablero.AddFila(primeraFila);
 		// Añadir filas intermedias
@@ -131,6 +133,12 @@ public class Control : MonoBehaviour {
 		return tablero.HayObstaculoEn(i, j);
 	}
 
+	public static bool HayEnemigoEn(int x, int z) {
+		int i = z;
+		int j = x;
+		return tablero.HayEnemigoEn(i, j);
+	}
+
 	public static void PonerBomba(int x, int z) {
 		ReducirBombas();
 		int i = z;
@@ -150,11 +158,85 @@ public class Control : MonoBehaviour {
 	}
 
 	private static void IniciarExplosion(int i, int j) {
-		for(int v = i - 2; v < i + 3; v++) {
-			InstanciarExplosion(v, j);
+		//            | vUp |
+		//            |.....|
+		//| hIzq |....| i,j |....| hDer |
+		//            |.....|
+		//            |vDown|
+		//
+		int vUp = (i - 2) >= 0 ? i - 2 : 0;
+		int vDown = (i + 3) <= Alto ? i + 3 : Alto;
+		int hIzq = (j - 2) >= 0 ? j - 2 : 0;
+		int hDer = (j + 3) <= Ancho ? j + 3 : Ancho;
+		int v;
+		int h;
+
+		// Casillas que contendran la explosion
+		ArrayList casillas = new ArrayList();
+		//Casilla casilla = tablero.GetCasilla(i, j);
+		if(tablero.GetCasilla(i, j) == null) {
+			tablero.SetCasilla(i, j, new Casilla());
 		}
-		for(int h = j - 2; h < j + 3; h++) {
-			InstanciarExplosion(i, h);
+		tablero.GetCasilla(i, j).AddElemento(new Explosion(InstanciarExplosion(i, j)));
+		tablero.GetCasilla(i, j).DestruirCajas();
+		casillas.Add(tablero.GetCasilla(i, j));
+		// Propagar hacia arriba
+		v = i - 1;
+		Debug.Log("vup = " + vUp);
+		if(v >= vUp && tablero.GetCasilla(v, j) == null) {
+			tablero.SetCasilla(v, j, new Casilla());
+		}
+		while((v >= vUp) && (!tablero.GetCasilla(v, j).HayObstaculoIndestructible())) {
+			tablero.GetCasilla(v, j).AddElemento(new Explosion(InstanciarExplosion(v, j)));
+			casillas.Add(tablero.GetCasilla(v, j));
+			tablero.GetCasilla(v, j).DestruirCajas();
+			v--;
+			if(v >= vUp && tablero.GetCasilla(v, j) == null) {
+				tablero.SetCasilla(v, j, new Casilla());
+			}
+		}
+		// Propagar hacia abajo
+		v = i + 1;
+		if(v < vDown && tablero.GetCasilla(v, j) == null) {
+			if(tablero.GetCasilla(v, j) == null) {
+				tablero.SetCasilla(v, j, new Casilla());
+			}
+		}
+		while((v < vDown) && (!tablero.GetCasilla(v, j).HayObstaculoIndestructible())) {
+			tablero.GetCasilla(v, j).AddElemento(new Explosion(InstanciarExplosion(v, j)));
+			casillas.Add(tablero.GetCasilla(v, j));
+			tablero.GetCasilla(v, j).DestruirCajas();
+			v++;
+			if(v < vDown && tablero.GetCasilla(v, j) == null) {
+				tablero.SetCasilla(v, j, new Casilla());
+			}
+		}
+
+		/*for(v = vini; v < vfin; v++) {
+			Debug.Log("get casilla " + v + ", " + j);
+			Casilla casilla = tablero.GetCasilla(v, j);
+			if(casilla == null) {
+				casilla = tablero.SetCasilla(v, j, new Casilla());
+			}
+			casilla.AddElemento(new Explosion(InstanciarExplosion(v, j)));
+			casillas.Add(casilla);
+		}
+		for(h = hini; h < hfin; h++) {
+			Debug.Log("get casilla " + i + ", " + h);
+			Casilla casilla = tablero.GetCasilla(i, h);
+			if(casilla == null) {
+				casilla = tablero.SetCasilla(i, h, new Casilla());
+			}
+			casilla.AddElemento(new Explosion(InstanciarExplosion(i, h)));
+			casillas.Add(casilla);
+		}*/
+		StartStaticCoroutine(LimpiarExplosion(casillas));
+	}
+
+	private static IEnumerator LimpiarExplosion(ArrayList casillas) {
+		yield return new WaitForSeconds(DuracionExplosion);
+		foreach(Casilla casilla in casillas) {
+			casilla.LimpiarExplosion();
 		}
 	}
 
@@ -184,6 +266,11 @@ public class Control : MonoBehaviour {
 		int j = x;
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Caja"), posReal, Quaternion.identity) as GameObject;
+	}
+
+	public static void FinDelJuego() {
+		GameObject.Destroy(jugador.Elemento);
+		//GUILayout.Label("Fin del juego");
 	}
 
 	public static void StartStaticCoroutine(IEnumerator rutina) {

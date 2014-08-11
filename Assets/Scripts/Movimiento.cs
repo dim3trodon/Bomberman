@@ -44,6 +44,8 @@ public class Movimiento : MonoBehaviour {
 	
 	protected bool moviendose = false;
 
+	protected bool nuevaPosicion = false;
+
 	protected int GetXTablero() {
 		return Control.GetJTablero(transform.position.x);
 	}
@@ -78,6 +80,7 @@ public class Movimiento : MonoBehaviour {
 			X = xFinal;
 			Z = zFinal;
 			moviendose = false;
+			nuevaPosicion = true;
 		}
 	}
 	

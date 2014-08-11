@@ -4,10 +4,13 @@
     <Files>
       <File FileName="Assets\Scripts\ElementoTablero.cs" Line="20" Column="2" />
       <File FileName="Assets\Scripts\ElementoTableroMovil.cs" Line="10" Column="24" />
-      <File FileName="Assets\Scripts\Bomba.cs" Line="6" Column="42" />
-      <File FileName="Assets\Scripts\Control.cs" Line="157" Column="3" />
-      <File FileName="Assets\Scripts\MovimientoJugador.cs" Line="13" Column="17" />
-      <File FileName="Assets\Scripts\Tablero.cs" Line="38" Column="1" />
+      <File FileName="Assets\Scripts\Bomba.cs" Line="23" Column="47" />
+      <File FileName="Assets\Scripts\Control.cs" Line="208" Column="24" />
+      <File FileName="Assets\Scripts\MovimientoJugador.cs" Line="11" Column="35" />
+      <File FileName="Assets\Scripts\Explosion.cs" Line="20" Column="15" />
+      <File FileName="Assets\Scripts\Movimiento.cs" Line="83" Column="25" />
+      <File FileName="Assets\Scripts\Tablero.cs" Line="37" Column="43" />
+      <File FileName="Assets\Scripts\Casilla.cs" Line="40" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

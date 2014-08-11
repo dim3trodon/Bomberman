@@ -43,6 +43,11 @@ public class Tablero {
 		return casilla == null ? false : casilla.HayObstaculo();
 	}
 
+	public bool HayEnemigoEn(int i, int j) {
+		Casilla casilla = GetCasilla(i, j);
+		return casilla == null ? false : casilla.HayEnemigo();
+	}
+
 	public void AddFila(Casilla[] fila) {
 		if(fila.Length != Ancho) {
 			Debug.LogError("fila.Length debe ser " + Ancho + " pero es " + fila.Length);

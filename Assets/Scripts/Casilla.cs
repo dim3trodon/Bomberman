@@ -14,9 +14,37 @@ public class Casilla {
 		casilla.Add(elemento);
 	}
 
-	public void DestruirPrimerElemento() {
+	/*public void DestruirPrimerElemento() {
 		(casilla[0] as ElementoTablero).Destruir();
 		casilla.RemoveAt(0);
+	}*/
+
+	public void LimpiarExplosion() {
+		ArrayList elementosQuitar = new ArrayList();
+		foreach(ElementoTablero elemento in casilla) {
+			if(elemento.ToString() == "Explosion") {
+				elementosQuitar.Add(elemento);
+			} else {
+				elemento.Elemento.transform.renderer.material = null;
+			}
+		}
+		foreach(ElementoTablero elemento in elementosQuitar) {
+			QuitarElemento(elemento);
+		}
+	}
+
+	// Destruye Cajas
+	public void DestruirCajas() {
+		ArrayList elementosDestruir = new ArrayList();
+		foreach(ElementoTablero elemento in casilla) {
+			if(elemento.ToString() == "Caja") {
+				elementosDestruir.Add(elemento);
+				elemento.Destruir();
+			}
+		}
+		foreach(ElementoTablero elemento in elementosDestruir) {
+			QuitarElemento(elemento);
+		}
 	}
 
 	public void DestruirTodosElementos() {
@@ -42,6 +70,24 @@ public class Casilla {
 	public bool HayObstaculo() {
 		foreach(ElementoTablero elemento in casilla) {
 			if(elemento.EsObstaculo()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public bool HayObstaculoIndestructible() {
+		foreach(ElementoTablero elemento in casilla) {
+			if(elemento.EsObstaculo() && !elemento.EsDestruible()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public bool HayEnemigo() {
+		foreach(ElementoTablero elemento in casilla) {
+			if(elemento.EsEnemigo()) {
 				return true;
 			}
 		}
