@@ -47,11 +47,13 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Bloque.cs" />
+     <Compile Include="Assets\Scripts\Bomba.cs" />
      <Compile Include="Assets\Scripts\Caja.cs" />
      <Compile Include="Assets\Scripts\Casilla.cs" />
      <Compile Include="Assets\Scripts\Control.cs" />
      <Compile Include="Assets\Scripts\ElementoTablero.cs" />
      <Compile Include="Assets\Scripts\ElementoTableroMovil.cs" />
+     <Compile Include="Assets\Scripts\Explosion.cs" />
      <Compile Include="Assets\Scripts\Jugador.cs" />
      <Compile Include="Assets\Scripts\Movimiento.cs" />
      <Compile Include="Assets\Scripts\MovimientoJugador.cs" />

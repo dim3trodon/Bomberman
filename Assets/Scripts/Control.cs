@@ -8,13 +8,35 @@ public class Control : MonoBehaviour {
 	public const float ZBase = 5.5f;
 	public const int Ancho = 19;
 	public const int Alto = 11;
-	public const float ProbCaja = 0.47f;
+	public const float ProbCaja = 0f;
 	public const int XInicialJugador = 1;
 	public const int ZInicialJugador = 1;
+
+	private static Control instancia;
 
 	private static Tablero tablero;
 
 	private ElementoTableroMovil jugador;
+
+	// Si llega a 0, no se pueden poner mas bombas
+	private static int bolsaBombas = 1;
+	public static void AumentarBombas() {
+		bolsaBombas++;
+	}
+	public static void ReducirBombas() {
+		if(bolsaBombas != 0) {
+			bolsaBombas--;
+		} else {
+			Debug.LogError("No puede haber bombas negativas");
+		}
+	}
+	public static bool HayBombasDisponibles() {
+		return bolsaBombas > 0;
+	}
+
+	void Awake() {
+		instancia = this;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -109,6 +131,47 @@ public class Control : MonoBehaviour {
 		return tablero.HayObstaculoEn(i, j);
 	}
 
+	public static void PonerBomba(int x, int z) {
+		ReducirBombas();
+		int i = z;
+		int j = x;
+		Casilla casilla = tablero.GetCasilla(i, j);
+		if(casilla == null) {
+			casilla = tablero.SetCasilla(i, j, new Casilla());
+		}
+		casilla.AddElemento(new Bomba(InstanciarBomba(x, z)));
+	}
+
+	public static void DetonarBomba(int x, int z, ElementoTablero bomba) {
+		int i = x;
+		int j = z;
+		tablero.GetCasilla(i, j).QuitarElemento(bomba);
+		IniciarExplosion(i, j);
+	}
+
+	private static void IniciarExplosion(int i, int j) {
+		for(int v = i - 2; v < i + 3; v++) {
+			InstanciarExplosion(v, j);
+		}
+		for(int h = j - 2; h < j + 3; h++) {
+			InstanciarExplosion(i, h);
+		}
+	}
+
+	private static GameObject InstanciarExplosion(int x, int z) {
+		int i = z;
+		int j = x;
+		Vector3 posReal = GetPosicionReal(i, j);
+		return GameObject.Instantiate(Resources.Load("Prefabs/Explosion"), posReal, Quaternion.identity) as GameObject;
+	}
+
+	private static GameObject InstanciarBomba(int x, int z) {
+		int i = x;
+		int j = z;
+		Vector3 posReal = GetPosicionReal(i, j);
+		return GameObject.Instantiate(Resources.Load("Prefabs/Bomba"), posReal, Quaternion.identity) as GameObject;
+	}
+
 	private GameObject InstanciarBloque(int x, int z) {
 		int i = z;
 		int j = x;
@@ -121,6 +184,10 @@ public class Control : MonoBehaviour {
 		int j = x;
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Caja"), posReal, Quaternion.identity) as GameObject;
+	}
+
+	public static void StartStaticCoroutine(IEnumerator rutina) {
+		instancia.StartCoroutine(rutina);
 	}
 	
 	// Update is called once per frame

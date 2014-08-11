@@ -3,18 +3,16 @@ using System.Collections;
 
 public class MovimientoJugador : Movimiento {
 
-	/*// Use this for initialization
-	void Start () {
-
-	}*/
-
 	// Se usa para evitar el movimiento en diagonal
 	private bool teclaPulsada = false;
 
 	// Update is called once per frame
 	void Update () {
 		if(!moviendose) {
-			if (Input.GetKeyDown (KeyCode.LeftArrow)){
+			if(Input.GetKeyDown (KeyCode.Space)) {
+				Control.PonerBomba(x, z);
+				teclaPulsada = true;
+			}else if (Input.GetKeyDown (KeyCode.LeftArrow) && !teclaPulsada){
 				xFinal = x - 1;
 				horaInicio = Time.time;
 				teclaPulsada = true;
