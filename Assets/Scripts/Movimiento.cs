@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Movimiento : MonoBehaviour {
 
-	public const float VelocidadDefecto = 6.0f;
+	public const float VelocidadDefecto = 1.0f;
 
 	public ElementoTableroMovil refElementoTableroMovil;
 
@@ -30,7 +30,7 @@ public class Movimiento : MonoBehaviour {
 	protected int zFinal;
 
 	protected float velocidad = VelocidadDefecto;
-	protected float Velocidad {
+	public float Velocidad {
 		get {
 			return velocidad;
 		}
@@ -62,14 +62,18 @@ public class Movimiento : MonoBehaviour {
 		}
 	}
 
-	// Use this for initialization
-	void Start () {
+	protected void InicializarPosicion() {
 		X = xFinal = GetXTablero();
 		Z = zFinal = GetZTablero();
 	}
 
+	// Use this for initialization
+	void Start () {
+		InicializarPosicion();
+	}
+
 	protected void Lerp() {
-		float distCovered = (Time.time - horaInicio) * velocidad;
+		float distCovered = (Time.time - horaInicio) * Velocidad;
 		transform.position = Vector3.Lerp(Control.GetPosicionReal(x, z),
 		                                           Control.GetPosicionReal(xFinal, zFinal),
 		                                           distCovered);

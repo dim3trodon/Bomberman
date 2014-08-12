@@ -46,6 +46,14 @@ public class Control : MonoBehaviour {
 		jugador = new Jugador(InstanciarJugador());
 		Casilla casillaJugador = new Casilla(jugador);
 		tablero.SetCasilla(XInicialJugador, ZInicialJugador, casillaJugador);
+
+		Casilla casilla = new Casilla();
+		GameObject e = InstanciarEnemigo(7, 7);
+		Enemigo enemigo = new Enemigo(e);
+		casilla.AddElemento(enemigo);
+		tablero.SetCasilla(7, 7, casilla);
+		e.GetComponent<Movimiento>().Velocidad = 2.5f;
+
 	}
 
 	private GameObject InstanciarJugador() {
@@ -112,7 +120,13 @@ public class Control : MonoBehaviour {
 		}
 		casillaInicio.QuitarElemento(elemento);
 		casillaFinal.AddElemento(elemento);
-		// TODO Evento de mover elemento
+	}
+
+	public static void EliminarEnemigoDe(int x, int z) {
+		int i = z;
+		int j = x;
+		Casilla casilla = tablero.GetCasilla(i, j);
+		casilla.EliminarEnemigo();
 	}
 
 	public static Vector3 GetPosicionReal(int i, int j) {
@@ -137,6 +151,12 @@ public class Control : MonoBehaviour {
 		int i = z;
 		int j = x;
 		return tablero.HayEnemigoEn(i, j);
+	}
+
+	public static bool HayExplosionEn(int x, int z) {
+		int i = z;
+		int j = x;
+		return tablero.HayExplosionEn(i, j);
 	}
 
 	public static void PonerBomba(int x, int z) {
@@ -237,25 +257,6 @@ public class Control : MonoBehaviour {
 				tablero.SetCasilla(i, h, new Casilla());
 			}
 		}
-
-		/*for(v = vini; v < vfin; v++) {
-			Debug.Log("get casilla " + v + ", " + j);
-			Casilla casilla = tablero.GetCasilla(v, j);
-			if(casilla == null) {
-				casilla = tablero.SetCasilla(v, j, new Casilla());
-			}
-			casilla.AddElemento(new Explosion(InstanciarExplosion(v, j)));
-			casillas.Add(casilla);
-		}
-		for(h = hini; h < hfin; h++) {
-			Debug.Log("get casilla " + i + ", " + h);
-			Casilla casilla = tablero.GetCasilla(i, h);
-			if(casilla == null) {
-				casilla = tablero.SetCasilla(i, h, new Casilla());
-			}
-			casilla.AddElemento(new Explosion(InstanciarExplosion(i, h)));
-			casillas.Add(casilla);
-		}*/
 		StartStaticCoroutine(LimpiarExplosion(casillas));
 	}
 
@@ -271,6 +272,13 @@ public class Control : MonoBehaviour {
 		int j = x;
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Explosion"), posReal, Quaternion.identity) as GameObject;
+	}
+
+	private static GameObject InstanciarEnemigo(int x, int z) {
+		int i = z;
+		int j = x;
+		Vector3 posReal = GetPosicionReal(i, j);
+		return GameObject.Instantiate(Resources.Load("Prefabs/Enemigo"), posReal, Quaternion.identity) as GameObject;
 	}
 
 	private static GameObject InstanciarBomba(int x, int z) {
@@ -295,16 +303,10 @@ public class Control : MonoBehaviour {
 	}
 
 	public static void FinDelJuego() {
-		GameObject.Destroy(jugador.Elemento);
-		//GUILayout.Label("Fin del juego");
+		//GameObject.Destroy(jugador.Elemento);
 	}
 
 	public static void StartStaticCoroutine(IEnumerator rutina) {
 		instancia.StartCoroutine(rutina);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

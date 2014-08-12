@@ -14,15 +14,4 @@ public class Jugador : ElementoTableroMovil {
 	public bool EsEnemigo() {
 		return false;
 	}
-
-	override
-	public string ToString() {
-		return "Jugador";
-	}
-
-	// Update is called once per frame
-	void Update () {
-		/*Debug.Log("update de jugador");
-		*/
-	}
 }

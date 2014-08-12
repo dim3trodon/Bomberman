@@ -14,11 +14,6 @@ public class Casilla {
 		casilla.Add(elemento);
 	}
 
-	/*public void DestruirPrimerElemento() {
-		(casilla[0] as ElementoTablero).Destruir();
-		casilla.RemoveAt(0);
-	}*/
-
 	public void LimpiarExplosion() {
 		ArrayList elementosQuitar = new ArrayList();
 		foreach(ElementoTablero elemento in casilla) {
@@ -30,6 +25,17 @@ public class Casilla {
 		}
 		foreach(ElementoTablero elemento in elementosQuitar) {
 			QuitarElemento(elemento);
+		}
+	}
+
+	public void EliminarEnemigo() {
+		int i = 0;
+		while(i < casilla.Count && casilla[i].ToString() != "Enemigo") {
+			i++;
+		}
+		if(i != casilla.Count) {
+			(casilla[i] as Enemigo).Destruir();
+			QuitarElemento(casilla[i] as Enemigo);
 		}
 	}
 
@@ -70,6 +76,7 @@ public class Casilla {
 	public bool HayObstaculo() {
 		foreach(ElementoTablero elemento in casilla) {
 			if(elemento.EsObstaculo()) {
+				elemento.Elemento.transform.renderer.material = null;
 				return true;
 			}
 		}
@@ -88,6 +95,15 @@ public class Casilla {
 	public bool HayEnemigo() {
 		foreach(ElementoTablero elemento in casilla) {
 			if(elemento.EsEnemigo()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public bool HayExplosion() {
+		foreach(ElementoTablero elemento in casilla) {
+			if(elemento.ToString() == "Explosion") {
 				return true;
 			}
 		}

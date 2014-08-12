@@ -53,9 +53,11 @@
      <Compile Include="Assets\Scripts\Control.cs" />
      <Compile Include="Assets\Scripts\ElementoTablero.cs" />
      <Compile Include="Assets\Scripts\ElementoTableroMovil.cs" />
+     <Compile Include="Assets\Scripts\Enemigo.cs" />
      <Compile Include="Assets\Scripts\Explosion.cs" />
      <Compile Include="Assets\Scripts\Jugador.cs" />
      <Compile Include="Assets\Scripts\Movimiento.cs" />
+     <Compile Include="Assets\Scripts\MovimientoEnemigo.cs" />
      <Compile Include="Assets\Scripts\MovimientoJugador.cs" />
      <Compile Include="Assets\Scripts\Tablero.cs" />
   </ItemGroup>
