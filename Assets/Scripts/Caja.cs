@@ -23,5 +23,10 @@ public class Caja : ElementoTablero {
 		return false;
 	}
 
+	override
+	public bool ParaAvanceExplosion() {
+		return true;
+	}
+
 	public Caja(GameObject elemento):base(elemento) {}
 }

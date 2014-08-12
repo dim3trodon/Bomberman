@@ -29,4 +29,9 @@ public abstract class ElementoTableroMovil : ElementoTablero {
 		return true;
 	}
 
+	override
+	public bool ParaAvanceExplosion() {
+		return false;
+	}
+
 }

@@ -24,4 +24,9 @@ public class Explosion : ElementoTablero {
 	public bool EsEnemigo() {
 		return true;
 	}
+
+	override
+	public bool ParaAvanceExplosion() {
+		return false;
+	}
 }

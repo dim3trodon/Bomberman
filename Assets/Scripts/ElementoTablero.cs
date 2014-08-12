@@ -24,4 +24,6 @@ public abstract class ElementoTablero {
 	public abstract bool EsDestruible();
 
 	public abstract bool EsEnemigo();
+
+	public abstract bool ParaAvanceExplosion();
 }

@@ -13,7 +13,7 @@ public class MovimientoJugador : Movimiento {
 		}else if(!moviendose) {
 			if(Input.GetKey (KeyCode.Space)) {
 				Control.PonerBomba(x, z);
-				teclaPulsada = true;
+				//teclaPulsada = true;
 			}else if (Input.GetKey (KeyCode.LeftArrow) && !teclaPulsada){
 				xFinal = x - 1;
 				horaInicio = Time.time;

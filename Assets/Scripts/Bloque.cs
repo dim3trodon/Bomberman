@@ -23,5 +23,10 @@ public class Bloque : ElementoTablero {
 		return false;
 	}
 
+	override
+	public bool ParaAvanceExplosion() {
+		return true;
+	}
+
 	public Bloque(GameObject elemento):base(elemento) {}
 }

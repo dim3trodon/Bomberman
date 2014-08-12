@@ -25,7 +25,7 @@ public class Control : MonoBehaviour {
 	private static ElementoTableroMovil jugador;
 
 	// Si llega a 0, no se pueden poner mas bombas
-	private static int bolsaBombas = 1;
+	private static int bolsaBombas = 2;
 	public static void AumentarBombas() {
 		bolsaBombas++;
 	}
@@ -51,13 +51,10 @@ public class Control : MonoBehaviour {
 		jugador = new Jugador(InstanciarJugador());
 		Casilla casillaJugador = new Casilla(jugador);
 		tablero.SetCasilla(IInicialJugador, JInicialJugador, casillaJugador);
+	}
 
-		/*Casilla casilla = new Casilla();
-		GameObject e = InstanciarEnemigo(7, 7);
-		Enemigo enemigo = new Enemigo(e);
-		casilla.AddElemento(enemigo);
-		tablero.SetCasilla(7, 7, casilla);
-		e.GetComponent<Movimiento>().Velocidad = 2f;*/
+	void OnGUI() {
+		GUILayout.Label("Bombas: " + bolsaBombas);
 	}
 
 	private GameObject InstanciarJugador() {
@@ -189,14 +186,16 @@ public class Control : MonoBehaviour {
 	}
 
 	public static void PonerBomba(int x, int z) {
-		ReducirBombas();
 		int i = z;
 		int j = x;
-		Casilla casilla = tablero.GetCasilla(i, j);
-		if(casilla == null) {
-			casilla = tablero.SetCasilla(i, j, new Casilla());
+		if(HayBombasDisponibles() && !tablero.HayBombaEn(i, j)) {
+			Casilla casilla = tablero.GetCasilla(i, j);
+			ReducirBombas();
+			if(casilla == null) {
+				casilla = tablero.SetCasilla(i, j, new Casilla());
+			}
+			casilla.AddElemento(new Bomba(InstanciarBomba(x, z)));
 		}
-		casilla.AddElemento(new Bomba(InstanciarBomba(x, z)));
 	}
 
 	public static void DetonarBomba(int x, int z, ElementoTablero bomba) {
@@ -219,6 +218,7 @@ public class Control : MonoBehaviour {
 		int hDer = (j + 3) <= Ancho ? j + 3 : Ancho;
 		int v;
 		int h;
+		bool pararAvanceExplosion = false;
 
 		// Casillas que contendran la explosion
 		ArrayList casillas = new ArrayList();
@@ -234,7 +234,10 @@ public class Control : MonoBehaviour {
 		if(v >= vUp && tablero.GetCasilla(v, j) == null) {
 			tablero.SetCasilla(v, j, new Casilla());
 		}
-		while((v >= vUp) && (!tablero.GetCasilla(v, j).HayObstaculoIndestructible())) {
+		while((v >= vUp) && (!tablero.GetCasilla(v, j).HayObstaculoIndestructible()) && !pararAvanceExplosion) {
+			if(tablero.GetCasilla(v, j).HayElementoQuePareExplosion()) {
+				pararAvanceExplosion = true;
+			}
 			tablero.GetCasilla(v, j).AddElemento(new Explosion(InstanciarExplosion(v, j)));
 			casillas.Add(tablero.GetCasilla(v, j));
 			tablero.GetCasilla(v, j).DestruirCajas();
@@ -245,10 +248,14 @@ public class Control : MonoBehaviour {
 		}
 		// Propagar hacia abajo
 		v = i + 1;
+		pararAvanceExplosion = false;
 		if(v < vDown && tablero.GetCasilla(v, j) == null) {
 			tablero.SetCasilla(v, j, new Casilla());
 		}
-		while((v < vDown) && (!tablero.GetCasilla(v, j).HayObstaculoIndestructible())) {
+		while((v < vDown) && (!tablero.GetCasilla(v, j).HayObstaculoIndestructible()) && !pararAvanceExplosion) {
+			if(tablero.GetCasilla(v, j).HayElementoQuePareExplosion()) {
+				pararAvanceExplosion = true;
+			}
 			tablero.GetCasilla(v, j).AddElemento(new Explosion(InstanciarExplosion(v, j)));
 			casillas.Add(tablero.GetCasilla(v, j));
 			tablero.GetCasilla(v, j).DestruirCajas();
@@ -259,10 +266,14 @@ public class Control : MonoBehaviour {
 		}
 		// Propagar hacia la izuierda
 		h = j - 1;
+		pararAvanceExplosion = false;
 		if(h >= hIzq && tablero.GetCasilla(i, h) == null) {
 			tablero.SetCasilla(i, h, new Casilla());
 		}
-		while((h >= hIzq) && (!tablero.GetCasilla(i, h).HayObstaculoIndestructible())) {
+		while((h >= hIzq) && (!tablero.GetCasilla(i, h).HayObstaculoIndestructible()) && !pararAvanceExplosion) {
+			if(tablero.GetCasilla(i, h).HayElementoQuePareExplosion()) {
+				pararAvanceExplosion = true;
+			}
 			tablero.GetCasilla(i, h).AddElemento(new Explosion(InstanciarExplosion(i, h)));
 			casillas.Add(tablero.GetCasilla(i, h));
 			tablero.GetCasilla(i, h).DestruirCajas();
@@ -273,10 +284,14 @@ public class Control : MonoBehaviour {
 		}
 		// Propagar hacia la derecha
 		h = j + 1;
+		pararAvanceExplosion = false;
 		if(h < hDer && tablero.GetCasilla(i, h) == null) {
 			tablero.SetCasilla(i, h, new Casilla());
 		}
-		while((h < hDer) && (!tablero.GetCasilla(i, h).HayObstaculoIndestructible())) {
+		while((h < hDer) && (!tablero.GetCasilla(i, h).HayObstaculoIndestructible()) && !pararAvanceExplosion) {
+			if(tablero.GetCasilla(i, h).HayElementoQuePareExplosion()) {
+				pararAvanceExplosion = true;
+			}
 			tablero.GetCasilla(i, h).AddElemento(new Explosion(InstanciarExplosion(i, h)));
 			casillas.Add(tablero.GetCasilla(i, h));
 			tablero.GetCasilla(i, h).DestruirCajas();

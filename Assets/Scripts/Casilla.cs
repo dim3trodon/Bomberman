@@ -137,5 +137,23 @@ public class Casilla {
 		}
 		return false;
 	}
+
+	public bool HayBomba() {
+		foreach(ElementoTablero elemento in casilla) {
+			if(elemento.ToString() == "Bomba") {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public bool HayElementoQuePareExplosion() {
+		foreach(ElementoTablero elemento in casilla) {
+			if(elemento.ParaAvanceExplosion()) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }
