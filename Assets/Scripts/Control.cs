@@ -20,7 +20,29 @@ public class Control : MonoBehaviour {
 	// las botas
 	public const float UnidadVelocidad = 5f;
 
-	private const int NumEnemigos = 3;
+	public const int RangoLlamaDefecto = 1;
+	private static int rangoLlama = RangoLlamaDefecto;
+
+	private static bool llamaAtraviesaCajas = false;
+	public static bool LlamaAtraviesaCajas {
+		get {
+			return llamaAtraviesaCajas;
+		}
+		set {
+			llamaAtraviesaCajas = value;
+		}
+	}
+
+	private const int NumEnemigosDefecto = 4;
+	private static int numEnemigos = NumEnemigosDefecto;
+	public static int NumEnemigos {
+		get {
+			return numEnemigos;
+		}
+		set {
+			numEnemigos = value;
+		}
+	}
 
 	private static Control instancia;
 
@@ -56,16 +78,35 @@ public class Control : MonoBehaviour {
 		Casilla casillaJugador = new Casilla(jugador);
 		tablero.SetCasilla(IInicialJugador, JInicialJugador, casillaJugador);
 
-		Item item = new Item("botas", InstanciarItemBotas(1, 2));
+		Item item = new Item("bomba_dorada", InstanciarItemBombaDorada(1, 2));
+		Caja caja = new Caja(InstanciarCaja(1, 2));
 		Casilla casillaItem = tablero.GetCasilla(1, 2);
 		casillaItem.AddElemento(item);
+		casillaItem.AddElemento(caja);
 	}
 
 	void OnGUI() {
+		GUILayout.Label("Enemigos: " + NumEnemigos);
 		GUILayout.Label("Bombas: " + bolsaBombas);
 		GUILayout.Label("Velocidad: " + 
 		                ((jugador.Elemento.GetComponent<MovimientoJugador>().Velocidad - Movimiento.VelocidadDefecto) 
 		 					/ UnidadVelocidad + 1));
+		GUILayout.Label("Llama: " + rangoLlama);
+		if(LlamaAtraviesaCajas) {
+			GUILayout.Label("Bomba dorada");
+		}
+	}
+
+	public static bool SePuedePasarDeFase() {
+		return numEnemigos == 0;
+	}
+
+	public static void SiguienteFase() {
+		if(SePuedePasarDeFase()) {
+			Debug.Log("Siguiente fase");
+		} else {
+			Debug.LogError("Aun no se puede pasar de fase. Enemigos: " + numEnemigos);
+		}
 	}
 
 	public static void AumentarVelocidadPersonaje() {
@@ -77,6 +118,10 @@ public class Control : MonoBehaviour {
 		return GameObject.Instantiate(Resources.Load("Prefabs/Jugador"), 
 		                       GetPosicionReal(IInicialJugador, JInicialJugador),
 		                       Quaternion.identity) as GameObject;
+	}
+
+	public static void AumentarRangoLlama() {
+		rangoLlama++;
 	}
 
 	public void InicializarTablero() {
@@ -169,6 +214,7 @@ public class Control : MonoBehaviour {
 		int j = x;
 		Casilla casilla = tablero.GetCasilla(i, j);
 		casilla.EliminarEnemigo();
+		NumEnemigos--;
 	}
 
 	public static Vector3 GetPosicionReal(int i, int j) {
@@ -240,10 +286,10 @@ public class Control : MonoBehaviour {
 		//            |.....|
 		//            |vDown|
 		//
-		int vUp = (i - 2) >= 0 ? i - 2 : 0;
-		int vDown = (i + 3) <= Alto ? i + 3 : Alto;
-		int hIzq = (j - 2) >= 0 ? j - 2 : 0;
-		int hDer = (j + 3) <= Ancho ? j + 3 : Ancho;
+		int vUp = (i - rangoLlama) >= 0 ? i - rangoLlama : 0;
+		int vDown = (i + rangoLlama + 1) <= Alto ? i + rangoLlama + 1 : Alto;
+		int hIzq = (j - rangoLlama) >= 0 ? j - rangoLlama : 0;
+		int hDer = (j + rangoLlama + 1) <= Ancho ? j + rangoLlama + 1 : Ancho;
 		int v;
 		int h;
 		bool pararAvanceExplosion = false;
@@ -263,7 +309,7 @@ public class Control : MonoBehaviour {
 			tablero.SetCasilla(v, j, new Casilla());
 		}
 		while((v >= vUp) && (!tablero.GetCasilla(v, j).HayObstaculoIndestructible()) && !pararAvanceExplosion) {
-			if(tablero.GetCasilla(v, j).HayElementoQuePareExplosion()) {
+			if(!LlamaAtraviesaCajas && tablero.GetCasilla(v, j).HayElementoQuePareExplosion()) {
 				pararAvanceExplosion = true;
 			}
 			tablero.GetCasilla(v, j).AddElemento(new Explosion(InstanciarExplosion(v, j)));
@@ -281,7 +327,7 @@ public class Control : MonoBehaviour {
 			tablero.SetCasilla(v, j, new Casilla());
 		}
 		while((v < vDown) && (!tablero.GetCasilla(v, j).HayObstaculoIndestructible()) && !pararAvanceExplosion) {
-			if(tablero.GetCasilla(v, j).HayElementoQuePareExplosion()) {
+			if(!LlamaAtraviesaCajas && tablero.GetCasilla(v, j).HayElementoQuePareExplosion()) {
 				pararAvanceExplosion = true;
 			}
 			tablero.GetCasilla(v, j).AddElemento(new Explosion(InstanciarExplosion(v, j)));
@@ -299,7 +345,7 @@ public class Control : MonoBehaviour {
 			tablero.SetCasilla(i, h, new Casilla());
 		}
 		while((h >= hIzq) && (!tablero.GetCasilla(i, h).HayObstaculoIndestructible()) && !pararAvanceExplosion) {
-			if(tablero.GetCasilla(i, h).HayElementoQuePareExplosion()) {
+			if(!LlamaAtraviesaCajas && tablero.GetCasilla(i, h).HayElementoQuePareExplosion()) {
 				pararAvanceExplosion = true;
 			}
 			tablero.GetCasilla(i, h).AddElemento(new Explosion(InstanciarExplosion(i, h)));
@@ -317,7 +363,7 @@ public class Control : MonoBehaviour {
 			tablero.SetCasilla(i, h, new Casilla());
 		}
 		while((h < hDer) && (!tablero.GetCasilla(i, h).HayObstaculoIndestructible()) && !pararAvanceExplosion) {
-			if(tablero.GetCasilla(i, h).HayElementoQuePareExplosion()) {
+			if(!LlamaAtraviesaCajas && tablero.GetCasilla(i, h).HayElementoQuePareExplosion()) {
 				pararAvanceExplosion = true;
 			}
 			tablero.GetCasilla(i, h).AddElemento(new Explosion(InstanciarExplosion(i, h)));
@@ -363,14 +409,21 @@ public class Control : MonoBehaviour {
 		int i = z;
 		int j = x;
 		Vector3 posReal = GetPosicionReal(i, j);
-		return GameObject.Instantiate(Resources.Load("Prefabs/Item_botas"), posReal, Quaternion.identity) as GameObject;
+		return GameObject.Instantiate(Resources.Load("Prefabs/Item_botas"), posReal, new Quaternion(0, 180, 0 ,0)) as GameObject;
 	}
 
 	private static GameObject InstanciarItemLlama(int x, int z) {
 		int i = z;
 		int j = x;
 		Vector3 posReal = GetPosicionReal(i, j);
-		return GameObject.Instantiate(Resources.Load("Prefabs/Item_llama"), posReal, Quaternion.identity) as GameObject;
+		return GameObject.Instantiate(Resources.Load("Prefabs/Item_llama"), posReal, new Quaternion(0, 180, 0 ,0)) as GameObject;
+	}
+
+	private static GameObject InstanciarItemBombaDorada(int x, int z) {
+		int i = z;
+		int j = x;
+		Vector3 posReal = GetPosicionReal(i, j);
+		return GameObject.Instantiate(Resources.Load("Prefabs/Item_bomba_dorada"), posReal, new Quaternion(0, 180, 0 ,0)) as GameObject;
 	}
 
 	private static GameObject InstanciarBomba(int x, int z) {

@@ -31,7 +31,7 @@ public abstract class ElementoTableroMovil : ElementoTablero {
 
 	override
 	public bool ParaAvanceExplosion() {
-		return false;
+		return true;
 	}
 
 	override

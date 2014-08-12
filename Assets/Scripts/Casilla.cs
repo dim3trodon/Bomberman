@@ -49,7 +49,7 @@ public class Casilla {
 			if(elemento.ToString() == "Explosion") {
 				elementosQuitar.Add(elemento);
 			} else {
-				elemento.Elemento.transform.renderer.material = null;
+				//elemento.Elemento.transform.renderer.material = null;
 			}
 		}
 		foreach(ElementoTablero elemento in elementosQuitar) {
@@ -175,6 +175,15 @@ public class Casilla {
 			//(casilla[i] as ElementoTablero).Destruir();
 			QuitarElemento(casilla[i] as ElementoTablero);
 		}
+	}
+
+	public bool HayPuerta() {
+		foreach(ElementoTablero elemento in casilla) {
+			if(elemento.ToString() == "Puerta") {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

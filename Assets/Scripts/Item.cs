@@ -4,6 +4,10 @@ using System.Collections;
 public class Item : ElementoTablero {
 
 	private string tipo;
+	public const string Bomba = "bomba";
+	public const string Botas = "botas";
+	public const string Llama = "llama";
+	public const string BombaDorada = "bomba_dorada";
 
 	public Item(string tipo, GameObject elemento):base(elemento) {
 		this.tipo = tipo.ToLower();
@@ -12,13 +16,20 @@ public class Item : ElementoTablero {
 	public void Obtener() {
 		Debug.Log("Obtener item "  + tipo);
 		switch(tipo) {
-		case ("bomba"):
+		case (Bomba):
 			Control.AumentarBombas();
 			break;
-		case ("botas"):
+		case (Botas):
 			Control.AumentarVelocidadPersonaje();
 			break;
-		case("llama"):
+		case(Llama):
+			Control.AumentarRangoLlama();
+			break;
+		case(BombaDorada):
+			Control.LlamaAtraviesaCajas = true;
+			break;
+		default:
+			Debug.LogError(tipo + " no es un tipo de item");
 			break;
 		}
 		Destruir();

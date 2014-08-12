@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\Movimiento.cs" />
      <Compile Include="Assets\Scripts\MovimientoEnemigo.cs" />
      <Compile Include="Assets\Scripts\MovimientoJugador.cs" />
+     <Compile Include="Assets\Scripts\Puerta.cs" />
      <Compile Include="Assets\Scripts\Tablero.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
