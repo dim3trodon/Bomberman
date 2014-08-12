@@ -50,6 +50,18 @@ public class Tablero {
 		return casillasVacias;
 	}
 
+	public ArrayList GetCasillasConCajas() {
+		ArrayList casillasConCajas = new ArrayList();
+		for(int i = 0; i < Alto; i++) {
+			for(int j = 0; j < Ancho; j++) {
+				if(tablero[i][j].HayCaja()) {
+					casillasConCajas.Add(tablero[i][j]);
+				}
+			}
+		}
+		return casillasConCajas;
+	}
+
 	public bool HayObstaculoEn(int i, int j) {
 		Casilla casilla = GetCasilla(i, j);
 		return casilla == null ? false : casilla.HayObstaculo();

@@ -44,6 +44,10 @@ public class Control : MonoBehaviour {
 		}
 	}
 
+	// Numero de items que se colocan en el tablero 
+	// (incluida la puerta)
+	public const int NumItemsTablero = 5;
+
 	private static Control instancia;
 
 	private static Tablero tablero;
@@ -51,7 +55,7 @@ public class Control : MonoBehaviour {
 	private static ElementoTableroMovil jugador;
 
 	// Si llega a 0, no se pueden poner mas bombas
-	private static int bolsaBombas = 2;
+	private static int bolsaBombas = 1;
 	public static void AumentarBombas() {
 		bolsaBombas++;
 	}
@@ -77,12 +81,6 @@ public class Control : MonoBehaviour {
 		jugador = new Jugador(InstanciarJugador());
 		Casilla casillaJugador = new Casilla(jugador);
 		tablero.SetCasilla(IInicialJugador, JInicialJugador, casillaJugador);
-
-		Puerta item = new Puerta(InstanciarPuerta(1, 2));
-		Caja caja = new Caja(InstanciarCaja(1, 2));
-		Casilla casillaItem = tablero.GetCasilla(1, 2);
-		casillaItem.AddElemento(item);
-		casillaItem.AddElemento(caja);
 	}
 
 	void OnGUI() {
@@ -173,6 +171,7 @@ public class Control : MonoBehaviour {
 		// al principio del juego
 		tablero.ReservarCasillasParaJugador();
 		InicializarEnemigos();
+		InicializarItemsYPuerta();
 	}
 
 	private void InicializarEnemigos() {
@@ -186,6 +185,7 @@ public class Control : MonoBehaviour {
 			}
 		}
 		// Se instancian los enemigos
+		// TODO Puede no haber espacio suficiente para todos los enemigos
 		for(int i = 0; i < NumEnemigos; i++) {
 			Casilla casilla = casillasValidas[Random.Range(0, casillasValidas.Count)] as Casilla;
 			GameObject enemigo = InstanciarEnemigo(casilla.I, casilla.J);
@@ -193,6 +193,40 @@ public class Control : MonoBehaviour {
 			enemigo.GetComponent<Movimiento>().Velocidad = 2f;
 			casilla.AddElemento(new Enemigo(enemigo));
 		}
+	}
+
+	private void InicializarItemsYPuerta() {
+		ArrayList casillasConCajas = tablero.GetCasillasConCajas();
+		// Añadir puerta
+		int pos = Random.Range(0, casillasConCajas.Count);
+		int x = (casillasConCajas[pos] as Casilla).I;
+		int z = (casillasConCajas[pos] as Casilla).J;
+		(casillasConCajas[pos] as Casilla).AddElemento(new Puerta(InstanciarPuerta(x, z)));
+		casillasConCajas.RemoveAt(pos);
+		// Añadir item bomba
+		pos = Random.Range(0, casillasConCajas.Count);
+		x = (casillasConCajas[pos] as Casilla).I;
+		z = (casillasConCajas[pos] as Casilla).J;
+		(casillasConCajas[pos] as Casilla).AddElemento(new Item(Item.Bomba, InstanciarItemBomba(x, z)));
+		casillasConCajas.RemoveAt(pos);
+		// Añadir item botas
+		pos = Random.Range(0, casillasConCajas.Count);
+		x = (casillasConCajas[pos] as Casilla).I;
+		z = (casillasConCajas[pos] as Casilla).J;
+		(casillasConCajas[pos] as Casilla).AddElemento(new Item(Item.Botas, InstanciarItemBotas(x, z)));
+		casillasConCajas.RemoveAt(pos);
+		// Añadir item llama
+		pos = Random.Range(0, casillasConCajas.Count);
+		x = (casillasConCajas[pos] as Casilla).I;
+		z = (casillasConCajas[pos] as Casilla).J;
+		(casillasConCajas[pos] as Casilla).AddElemento(new Item(Item.Llama, InstanciarItemLlama(x, z)));
+		casillasConCajas.RemoveAt(pos);
+		// Añadir item bomba dorada
+		pos = Random.Range(0, casillasConCajas.Count);
+		x = (casillasConCajas[pos] as Casilla).I;
+		z = (casillasConCajas[pos] as Casilla).J;
+		(casillasConCajas[pos] as Casilla).AddElemento(new Item(Item.BombaDorada, InstanciarItemBombaDorada(x, z)));
+		casillasConCajas.RemoveAt(pos);
 	}
 
 	public static void MoverElementoA(int xInicio, int zInicio, int xFinal, int zFinal, ElementoTableroMovil elemento) {

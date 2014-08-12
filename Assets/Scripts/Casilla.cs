@@ -185,5 +185,14 @@ public class Casilla {
 		}
 		return false;
 	}
+
+	public bool HayCaja() {
+		foreach(ElementoTablero elemento in casilla) {
+			if(elemento.ToString() == "Caja") {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }
