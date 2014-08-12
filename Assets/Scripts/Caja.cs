@@ -28,5 +28,10 @@ public class Caja : ElementoTablero {
 		return true;
 	}
 
+	override
+	public bool EsObtenible() {
+		return false;
+	}
+
 	public Caja(GameObject elemento):base(elemento) {}
 }

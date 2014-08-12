@@ -75,6 +75,15 @@ public class Tablero {
 		return casilla == null ? false : casilla.HayElementoQuePareExplosion();
 	}
 
+	public bool HayItemEn(int i, int j) {
+		Casilla casilla = GetCasilla(i, j);
+		return casilla == null ? false : casilla.HayItem();
+	}
+
+	public void ObtenerItemDe(int i, int j) {
+		GetCasilla(i, j).ObtenerItem();
+	}
+
 	public void AddFila(Casilla[] fila) {
 		if(fila.Length != Ancho) {
 			Debug.LogError("fila.Length debe ser " + Ancho + " pero es " + fila.Length);

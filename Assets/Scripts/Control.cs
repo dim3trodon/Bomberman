@@ -16,6 +16,10 @@ public class Control : MonoBehaviour {
 	// instancian los enemigos aleatoriamente
 	public const float DistanciaParaInstanciarEnemigos = 5f;
 
+	// Unidad en la que aumenta la velocidad al conseguir
+	// las botas
+	public const float UnidadVelocidad = 5f;
+
 	private const int NumEnemigos = 3;
 
 	private static Control instancia;
@@ -51,10 +55,22 @@ public class Control : MonoBehaviour {
 		jugador = new Jugador(InstanciarJugador());
 		Casilla casillaJugador = new Casilla(jugador);
 		tablero.SetCasilla(IInicialJugador, JInicialJugador, casillaJugador);
+
+		Item item = new Item("botas", InstanciarItemBotas(1, 2));
+		Casilla casillaItem = tablero.GetCasilla(1, 2);
+		casillaItem.AddElemento(item);
 	}
 
 	void OnGUI() {
 		GUILayout.Label("Bombas: " + bolsaBombas);
+		GUILayout.Label("Velocidad: " + 
+		                ((jugador.Elemento.GetComponent<MovimientoJugador>().Velocidad - Movimiento.VelocidadDefecto) 
+		 					/ UnidadVelocidad + 1));
+	}
+
+	public static void AumentarVelocidadPersonaje() {
+		float vel = jugador.Elemento.GetComponent<MovimientoJugador>().Velocidad + UnidadVelocidad;
+		jugador.Elemento.GetComponent<MovimientoJugador>().Velocidad = vel; 
 	}
 
 	private GameObject InstanciarJugador() {
@@ -177,6 +193,18 @@ public class Control : MonoBehaviour {
 		int i = z;
 		int j = x;
 		return tablero.HayEnemigoEn(i, j);
+	}
+
+	public static bool HayItemEn(int x, int z) {
+		int i = z;
+		int j = x;
+		return tablero.HayItemEn(i, j);
+	}
+
+	public static void ObtenerItemDe(int x, int z) {
+		int i = z;
+		int j = x;
+		tablero.ObtenerItemDe(i, j);
 	}
 
 	public static bool HayExplosionEn(int x, int z) {
@@ -322,6 +350,27 @@ public class Control : MonoBehaviour {
 		int j = x;
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Enemigo"), posReal, Quaternion.identity) as GameObject;
+	}
+
+	private static GameObject InstanciarItemBomba(int x, int z) {
+		int i = z;
+		int j = x;
+		Vector3 posReal = GetPosicionReal(i, j);
+		return GameObject.Instantiate(Resources.Load("Prefabs/Item_bomba"), posReal, new Quaternion(0, 180, 0 ,0)) as GameObject;
+	}
+
+	private static GameObject InstanciarItemBotas(int x, int z) {
+		int i = z;
+		int j = x;
+		Vector3 posReal = GetPosicionReal(i, j);
+		return GameObject.Instantiate(Resources.Load("Prefabs/Item_botas"), posReal, Quaternion.identity) as GameObject;
+	}
+
+	private static GameObject InstanciarItemLlama(int x, int z) {
+		int i = z;
+		int j = x;
+		Vector3 posReal = GetPosicionReal(i, j);
+		return GameObject.Instantiate(Resources.Load("Prefabs/Item_llama"), posReal, Quaternion.identity) as GameObject;
 	}
 
 	private static GameObject InstanciarBomba(int x, int z) {

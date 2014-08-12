@@ -34,4 +34,9 @@ public abstract class ElementoTableroMovil : ElementoTablero {
 		return false;
 	}
 
+	override
+	public bool EsObtenible() {
+		return false;
+	}
+
 }

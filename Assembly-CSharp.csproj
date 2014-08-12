@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\ElementoTableroMovil.cs" />
      <Compile Include="Assets\Scripts\Enemigo.cs" />
      <Compile Include="Assets\Scripts\Explosion.cs" />
+     <Compile Include="Assets\Scripts\Item.cs" />
      <Compile Include="Assets\Scripts\Jugador.cs" />
      <Compile Include="Assets\Scripts\Movimiento.cs" />
      <Compile Include="Assets\Scripts\MovimientoEnemigo.cs" />

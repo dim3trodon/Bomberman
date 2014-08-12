@@ -28,5 +28,10 @@ public class Bloque : ElementoTablero {
 		return true;
 	}
 
+	override
+	public bool EsObtenible() {
+		return false;
+	}
+
 	public Bloque(GameObject elemento):base(elemento) {}
 }

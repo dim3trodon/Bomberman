@@ -29,4 +29,9 @@ public class Explosion : ElementoTablero {
 	public bool ParaAvanceExplosion() {
 		return false;
 	}
+
+	override
+	public bool EsObtenible() {
+		return false;
+	}
 }

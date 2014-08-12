@@ -10,7 +10,9 @@ public class MovimientoJugador : Movimiento {
 	void Update () {
 		if(Control.HayEnemigoEn(X, Z)) {
 			Control.FinDelJuego();
-		}else if(!moviendose) {
+		} else if(Control.HayItemEn(X, Z)) {
+			Control.ObtenerItemDe(X, Z);
+		} else if(!moviendose) {
 			if(Input.GetKey (KeyCode.Space)) {
 				Control.PonerBomba(x, z);
 				//teclaPulsada = true;

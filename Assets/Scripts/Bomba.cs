@@ -48,4 +48,9 @@ public class Bomba : ElementoTablero {
 		return false;
 	}
 
+	override
+	public bool EsObtenible() {
+		return false;
+	}
+
 }

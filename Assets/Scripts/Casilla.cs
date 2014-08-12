@@ -155,5 +155,26 @@ public class Casilla {
 		}
 		return false;
 	}
+
+	public bool HayItem() {
+		foreach(ElementoTablero elemento in casilla) {
+			if(elemento.EsObtenible()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void ObtenerItem() {
+		int i = 0;
+		while(i < casilla.Count && !(casilla[i] as ElementoTablero).EsObtenible()) {
+			i++;
+		}
+		if(i != casilla.Count) {
+			(casilla[i] as Item).Obtener();
+			//(casilla[i] as ElementoTablero).Destruir();
+			QuitarElemento(casilla[i] as ElementoTablero);
+		}
+	}
 	
 }
