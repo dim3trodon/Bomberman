@@ -8,10 +8,15 @@ public class Control : MonoBehaviour {
 	public const float ZBase = 5.5f;
 	public const int Ancho = 19;
 	public const int Alto = 11;
-	public const float ProbCaja = 0.47f;
-	public const int XInicialJugador = 1;
-	public const int ZInicialJugador = 1;
+	public const float ProbCaja = 0.33f;
+	public const int IInicialJugador = 1;
+	public const int JInicialJugador = 1;
 	public const float DuracionExplosion = 0.9f;
+	// Distancia desde el jugador a partir de la cual se 
+	// instancian los enemigos aleatoriamente
+	public const float DistanciaParaInstanciarEnemigos = 5f;
+
+	private const int NumEnemigos = 3;
 
 	private static Control instancia;
 
@@ -45,20 +50,19 @@ public class Control : MonoBehaviour {
 		InicializarTablero();
 		jugador = new Jugador(InstanciarJugador());
 		Casilla casillaJugador = new Casilla(jugador);
-		tablero.SetCasilla(XInicialJugador, ZInicialJugador, casillaJugador);
+		tablero.SetCasilla(IInicialJugador, JInicialJugador, casillaJugador);
 
-		Casilla casilla = new Casilla();
+		/*Casilla casilla = new Casilla();
 		GameObject e = InstanciarEnemigo(7, 7);
 		Enemigo enemigo = new Enemigo(e);
 		casilla.AddElemento(enemigo);
 		tablero.SetCasilla(7, 7, casilla);
-		e.GetComponent<Movimiento>().Velocidad = 2.5f;
-
+		e.GetComponent<Movimiento>().Velocidad = 2f;*/
 	}
 
 	private GameObject InstanciarJugador() {
 		return GameObject.Instantiate(Resources.Load("Prefabs/Jugador"), 
-		                       GetPosicionReal(XInicialJugador, ZInicialJugador),
+		                       GetPosicionReal(IInicialJugador, JInicialJugador),
 		                       Quaternion.identity) as GameObject;
 	}
 
@@ -85,6 +89,8 @@ public class Control : MonoBehaviour {
 						// Instanciar caja
 						if(Random.value < ProbCaja) {
 							filaIntermedia[j] = new Casilla(new Caja(InstanciarCaja(i, j)));
+						} else {
+							filaIntermedia[j] = new Casilla();
 						}
 					}
 				}
@@ -96,6 +102,8 @@ public class Control : MonoBehaviour {
 				for(int j = 1; j < Ancho - 1; j++) {
 					if(Random.value < ProbCaja) {
 						filaIntermedia[j] = new Casilla(new Caja(InstanciarCaja(i, j)));
+					} else {
+						filaIntermedia[j] = new Casilla();
 					}
 				}
 				filaIntermedia[Ancho - 1] = new Casilla (new Bloque(InstanciarBloque(i, Ancho - 1)));
@@ -106,6 +114,27 @@ public class Control : MonoBehaviour {
 		// Reservar ciertas casillas para que el jugador no quede atrapado
 		// al principio del juego
 		tablero.ReservarCasillasParaJugador();
+		InicializarEnemigos();
+	}
+
+	private void InicializarEnemigos() {
+		ArrayList casillasVacias = tablero.GetCasillasVacias();
+		ArrayList casillasValidas = new ArrayList();
+		foreach(Casilla casilla in casillasVacias) {
+			Vector2 posJugador = new Vector2(IInicialJugador, JInicialJugador);
+			// Se delimita una region en la que pueden aparecer los enemigos
+			if(Vector2.Distance(new Vector2(casilla.I, casilla.J), posJugador) > DistanciaParaInstanciarEnemigos) {
+				casillasValidas.Add(casilla);
+			}
+		}
+		// Se instancian los enemigos
+		for(int i = 0; i < NumEnemigos; i++) {
+			Casilla casilla = casillasValidas[Random.Range(0, casillasValidas.Count)] as Casilla;
+			GameObject enemigo = InstanciarEnemigo(casilla.I, casilla.J);
+
+			enemigo.GetComponent<Movimiento>().Velocidad = 2f;
+			casilla.AddElemento(new Enemigo(enemigo));
+		}
 	}
 
 	public static void MoverElementoA(int xInicio, int zInicio, int xFinal, int zFinal, ElementoTableroMovil elemento) {
@@ -202,7 +231,6 @@ public class Control : MonoBehaviour {
 		casillas.Add(tablero.GetCasilla(i, j));
 		// Propagar hacia arriba
 		v = i - 1;
-		Debug.Log("vup = " + vUp);
 		if(v >= vUp && tablero.GetCasilla(v, j) == null) {
 			tablero.SetCasilla(v, j, new Casilla());
 		}

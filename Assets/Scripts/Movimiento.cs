@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Movimiento : MonoBehaviour {
 
-	public const float VelocidadDefecto = 1.0f;
+	public const float VelocidadDefecto = 6.0f;
 
 	public ElementoTableroMovil refElementoTableroMovil;
 

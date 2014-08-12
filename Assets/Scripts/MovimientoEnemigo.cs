@@ -10,10 +10,7 @@ public class MovimientoEnemigo : Movimiento {
 	public const int SentidoB = 1;
 
 	public const float ProbCambiarModoRecorridoDefecto = 0.2f;
-	public const float ProbCambiarSentidoRecorridoDefecto = 0.2f;
-	public const float SegundosEsperaDefecto = 0.1f;
-
-	bool esperar = false;
+	public const float ProbCambiarSentidoRecorridoDefecto = 0.05f;
 
 	// Indica si el enemigo se mueve en vertical o en horizontal
 	private int modoRecorrido;
@@ -41,16 +38,6 @@ public class MovimientoEnemigo : Movimiento {
 			} else {
 				Debug.LogError(value + " no es un sentido de recorrido valido para un enemigo");
 			}
-		}
-	}
-
-	private float segundosEspera = SegundosEsperaDefecto;
-	public float SegundosEspera {
-		get {
-			return segundosEspera;
-		}
-		set {
-			segundosEspera = value;
 		}
 	}
 
@@ -115,26 +102,11 @@ public class MovimientoEnemigo : Movimiento {
 		}
 	}
 
-	private IEnumerator Esperar() {
-		esperar = true;
-		Debug.Log("esperar");
-		yield return new WaitForSeconds(segundosEspera);
-		esperar = false;
-	}
-
-	new
-	protected void Lerp() {
-		base.Lerp();
-		if(transform.position == Control.GetPosicionReal(xFinal, zFinal)) {
-			Esperar();
-		}
-	}
-
 	// Update is called once per frame
 	void Update () {
 		if(Control.HayExplosionEn(X, Z)) {
 			Control.EliminarEnemigoDe(X, Z);
-		} else if(!moviendose && !esperar) {
+		} else if(!moviendose) {
 			if(SePuedeCambiarDeModoRecorrido() && Random.value < ProbCambiarModoRecorrido) {
 				CambiarModoRecorrido();
 			}
@@ -160,10 +132,12 @@ public class MovimientoEnemigo : Movimiento {
 			}
 			if((x != xFinal) || (z != zFinal)) {
 				// Si hay un obstaculo, no moverse (xFinal y zFinal vuelve
-				// a ser la posicion actual del jugador)
+				// a ser la posicion actual del jugador) y cambiar el 
+				// sentido del recorrido
 				if(Control.HayObstaculoEn(xFinal, zFinal)) {
 					xFinal = x;
 					zFinal = z;
+					CambiarSentidoRecorrido();
 				} else {
 					moviendose = true;
 				}

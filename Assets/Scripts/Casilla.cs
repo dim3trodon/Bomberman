@@ -5,6 +5,35 @@ public class Casilla {
 
 	private ArrayList casilla;
 
+	private int i;
+	public int I {
+		get {
+			return i;
+		}
+		set {
+			i = value;
+		}
+	}
+
+	private int j;
+	public int J {
+		get {
+			return j;
+		}
+		set {
+			j = value;
+		}
+	}
+
+	public void SetPos(int i, int j) {
+		I = i;
+		J = j;
+	}
+
+	public int NumElementos() {
+		return casilla.Count;
+	}
+
 	public Casilla() {
 		casilla = new ArrayList();
 	}
@@ -76,7 +105,6 @@ public class Casilla {
 	public bool HayObstaculo() {
 		foreach(ElementoTablero elemento in casilla) {
 			if(elemento.EsObstaculo()) {
-				elemento.Elemento.transform.renderer.material = null;
 				return true;
 			}
 		}
