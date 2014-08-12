@@ -12,6 +12,8 @@ public class MovimientoJugador : Movimiento {
 			Control.FinDelJuego();
 		} else if(Control.HayItemEn(X, Z)) {
 			Control.ObtenerItemDe(X, Z);
+		} else if(Control.SePuedePasarDeFase() && Control.HayPuertaEn(X, Z)) {
+			Control.SiguienteFase();
 		} else if(!moviendose) {
 			if(Input.GetKey (KeyCode.Space)) {
 				Control.PonerBomba(x, z);

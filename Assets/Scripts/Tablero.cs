@@ -80,6 +80,11 @@ public class Tablero {
 		return casilla == null ? false : casilla.HayItem();
 	}
 
+	public bool HayPuertaEn(int i, int j) {
+		Casilla casilla = GetCasilla(i, j);
+		return casilla == null ? false : casilla.HayPuerta();
+	}
+
 	public void ObtenerItemDe(int i, int j) {
 		GetCasilla(i, j).ObtenerItem();
 	}

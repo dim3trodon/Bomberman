@@ -78,7 +78,7 @@ public class Control : MonoBehaviour {
 		Casilla casillaJugador = new Casilla(jugador);
 		tablero.SetCasilla(IInicialJugador, JInicialJugador, casillaJugador);
 
-		Item item = new Item("bomba_dorada", InstanciarItemBombaDorada(1, 2));
+		Puerta item = new Puerta(InstanciarPuerta(1, 2));
 		Caja caja = new Caja(InstanciarCaja(1, 2));
 		Casilla casillaItem = tablero.GetCasilla(1, 2);
 		casillaItem.AddElemento(item);
@@ -257,6 +257,12 @@ public class Control : MonoBehaviour {
 		int i = z;
 		int j = x;
 		return tablero.HayExplosionEn(i, j);
+	}
+
+	public static bool HayPuertaEn(int x, int z) {
+		int i = z;
+		int j = x;
+		return tablero.HayPuertaEn(i, j);
 	}
 
 	public static void PonerBomba(int x, int z) {
@@ -445,6 +451,13 @@ public class Control : MonoBehaviour {
 		int j = x;
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Caja"), posReal, Quaternion.identity) as GameObject;
+	}
+
+	private GameObject InstanciarPuerta(int x, int z) {
+		int i = z;
+		int j = x;
+		Vector3 posReal = GetPosicionReal(i, j);
+		return GameObject.Instantiate(Resources.Load("Prefabs/Puerta"), posReal, Quaternion.identity) as GameObject;
 	}
 
 	public static void FinDelJuego() {
