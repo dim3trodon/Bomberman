@@ -132,5 +132,13 @@ public class Tablero {
 		EliminarCasilla(2, 1);
 		EliminarCasilla(3, 1);
 	}
+
+	public void Eliminar() {
+		for(int i = 0; i < Alto; i++) {
+			for(int j = 0; j < Ancho; j++) {
+				tablero[i][j].DestruirTodosElementos();
+			}
+		}
+	}
 	
 }

@@ -21,7 +21,7 @@ public class Control : MonoBehaviour {
 	public const float UnidadVelocidad = 5f;
 
 	public const int RangoLlamaDefecto = 1;
-	private static int rangoLlama = RangoLlamaDefecto;
+	private static int rangoLlama;
 
 	private static bool llamaAtraviesaCajas = false;
 	public static bool LlamaAtraviesaCajas {
@@ -33,8 +33,8 @@ public class Control : MonoBehaviour {
 		}
 	}
 
-	private const int NumEnemigosDefecto = 4;
-	private static int numEnemigos = NumEnemigosDefecto;
+	private const int NumEnemigosDefecto = 2;
+	private static int numEnemigos;
 	public static int NumEnemigos {
 		get {
 			return numEnemigos;
@@ -74,13 +74,36 @@ public class Control : MonoBehaviour {
 		instancia = this;
 	}
 
+	private static IEnumerator Esperar(float segundos) {
+		yield return new WaitForSeconds(segundos);
+	}
+
+	private static IEnumerator MostrarPantallaNegra(float segundos) {
+		int cullingMask = Camera.main.cullingMask;
+		Camera.main.cullingMask = 0;
+		yield return StartStaticCoroutine(Esperar(segundos));
+		Camera.main.cullingMask = cullingMask;
+	}
+
 	// Use this for initialization
 	void Start () {
 		Random.seed = (int)System.DateTime.Now.Ticks;
+		InicializarFase();
+	}
+
+	private void EliminarTablero() {
+		tablero.Eliminar();
+	}
+
+	private void InicializarFase() {
+		numEnemigos = NumEnemigosDefecto;
 		InicializarTablero();
 		jugador = new Jugador(InstanciarJugador());
 		Casilla casillaJugador = new Casilla(jugador);
 		tablero.SetCasilla(IInicialJugador, JInicialJugador, casillaJugador);
+		rangoLlama = RangoLlamaDefecto;
+		LlamaAtraviesaCajas = false;
+		jugador.Elemento.GetComponent<MovimientoJugador>().Velocidad = Movimiento.VelocidadDefecto;
 	}
 
 	void OnGUI() {
@@ -107,7 +130,7 @@ public class Control : MonoBehaviour {
 		}
 	}
 
-	public static void AumentarVelocidadPersonaje() {
+	public static void AumentarVelocidadJugador() {
 		float vel = jugador.Elemento.GetComponent<MovimientoJugador>().Velocidad + UnidadVelocidad;
 		jugador.Elemento.GetComponent<MovimientoJugador>().Velocidad = vel; 
 	}
@@ -496,9 +519,14 @@ public class Control : MonoBehaviour {
 
 	public static void FinDelJuego() {
 		//GameObject.Destroy(jugador.Elemento);
+		Debug.Log("Fin del juego");
+		//StartStaticCoroutine(Esperar(1f));
+		StartStaticCoroutine(MostrarPantallaNegra(0.5f));
+		instancia.EliminarTablero();
+		instancia.InicializarFase();
 	}
 
-	public static void StartStaticCoroutine(IEnumerator rutina) {
-		instancia.StartCoroutine(rutina);
+	public static Coroutine StartStaticCoroutine(IEnumerator rutina) {
+		return instancia.StartCoroutine(rutina);
 	}
 }

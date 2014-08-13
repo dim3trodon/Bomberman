@@ -1,14 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Control.cs">
     <Files>
-      <File FileName="Assets\Scripts\Control.cs" Line="36" Column="42" />
-      <File FileName="Assets\Scripts\Casilla.cs" Line="52" Column="7" />
-      <File FileName="Assets\Scripts\Tablero.cs" Line="84" Column="34" />
-      <File FileName="Assets\Scripts\Item.cs" Line="29" Column="39" />
-      <File FileName="Assets\Scripts\MovimientoJugador.cs" Line="14" Column="32" />
-      <File FileName="Assets\Scripts\Movimiento.cs" Line="6" Column="43" />
-      <File FileName="Assets\Scripts\ElementoTableroMovil.cs" Line="34" Column="14" />
+      <File FileName="Assets\Scripts\Control.cs" Line="208" Column="26" />
+      <File FileName="Assets\Scripts\ElementoTableroMovil.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

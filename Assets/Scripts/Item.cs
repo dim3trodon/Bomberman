@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Item : ElementoTablero {
@@ -20,7 +20,7 @@ public class Item : ElementoTablero {
 			Control.AumentarBombas();
 			break;
 		case (Botas):
-			Control.AumentarVelocidadPersonaje();
+			Control.AumentarVelocidadJugador();
 			break;
 		case(Llama):
 			Control.AumentarRangoLlama();
