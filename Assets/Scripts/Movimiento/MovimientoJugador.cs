@@ -23,19 +23,19 @@ public class MovimientoJugador : Movimiento {
 		} else if(!moviendose) {
 			if(Input.GetKey (KeyCode.Space)) {
 				Control.PonerBomba(i, j);
-			}else if (Input.GetKey (KeyCode.LeftArrow) && !teclaPulsada){
+			}else if ((Input.GetKey (KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && !teclaPulsada){
 				jFinal = j - 1;
 				horaInicio = Time.time;
 				teclaPulsada = true;
-			}else if ((Input.GetKey (KeyCode.RightArrow) && !teclaPulsada)){
+			}else if (((Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) && !teclaPulsada)){
 				jFinal = j + 1;
 				horaInicio = Time.time;
 				teclaPulsada = true;
-			}else if (Input.GetKey (KeyCode.UpArrow) && !teclaPulsada){
+			}else if ((Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) && !teclaPulsada){
 				iFinal = i - 1;
 				horaInicio = Time.time;
 				teclaPulsada = true;
-			}else if (Input.GetKey (KeyCode.DownArrow) && !teclaPulsada){
+			}else if ((Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) && !teclaPulsada){
 				iFinal = i + 1;
 				horaInicio = Time.time;
 			}

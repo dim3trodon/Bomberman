@@ -58,7 +58,7 @@ public class MovimientoEnemigo : Movimiento {
 
 	// Probabilidad para que el enemigo pase de caminar horizontalmente a verticalmente
 	// o viceversa.
-	private float probCambiarModoRecorrido = ProbCambiarModoRecorridoDefecto;
+	private float probCambiarModoRecorrido;
 	public float ProbCambiarModoRecorrido {
 		get {
 			return probCambiarModoRecorrido;
@@ -69,7 +69,7 @@ public class MovimientoEnemigo : Movimiento {
 	}
 
 	// Probabilidad para que el enemigo cambie de sentido de recorrido.
-	private float probCambiarSentidoRecorrido = ProbCambiarSentidoRecorridoDefecto;
+	private float probCambiarSentidoRecorrido;
 	public float ProbCambiarSentidoRecorrido {
 		get {
 			return probCambiarSentidoRecorrido;
