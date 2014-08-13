@@ -265,6 +265,7 @@ public class Control : MonoBehaviour {
 	public static void SiguienteFase() {
 		if(SePuedePasarDeFase()) {
 			Debug.Log("Siguiente fase");
+			Application.LoadLevel("felicidades");
 		} else {
 			Debug.LogError("Aun no se puede pasar de fase. Enemigos: " + numEnemigos);
 		}

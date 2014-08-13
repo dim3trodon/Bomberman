@@ -62,6 +62,7 @@
      <Compile Include="Assets\Scripts\ElementosTablero\Jugador.cs" />
      <Compile Include="Assets\Scripts\ElementosTablero\Llama.cs" />
      <Compile Include="Assets\Scripts\ElementosTablero\Puerta.cs" />
+     <Compile Include="Assets\Scripts\GUIFelicidades.cs" />
      <Compile Include="Assets\Scripts\Movimiento\Movimiento.cs" />
      <Compile Include="Assets\Scripts\Movimiento\MovimientoEnemigo.cs" />
      <Compile Include="Assets\Scripts\Movimiento\MovimientoJugador.cs" />
