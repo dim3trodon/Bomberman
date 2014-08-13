@@ -1,9 +1,17 @@
-﻿using UnityEngine;
+// Bomba que el jugador puede poner en el tablero y que tras unos segundos,
+// detona. Es destruible, supone un obstaculo para los jugadores y los enemigos
+// pero no para el avance de la llama. No hace daño al ser tocada por el jugador
+// y no puede ser obtenida. Cuando la pones, explota si o si.
+// Version: 1.0
+// Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
+using UnityEngine;
 using System.Collections;
 
 public class Bomba : ElementoTableroEstatico {
 
-	public const float TiempoExplosion = 1.5f;
+	public const float EsperaParaDetonacion = 1.5f;
+
+	public const string BombaString = "Bomba";
 
 	public Bomba(GameObject elemento):base(elemento) {
 		Control.StartStaticCoroutine(Encender());
@@ -11,10 +19,11 @@ public class Bomba : ElementoTableroEstatico {
 
 	// Espera un tiempo determinado y detona la bomba
 	private IEnumerator Encender() {
-		yield return new WaitForSeconds(TiempoExplosion);
+		yield return new WaitForSeconds(EsperaParaDetonacion);
 		Detonar();
 	}
 
+	// Detona la bomba
 	private void Detonar() {
 		Control.AumentarBombas();
 		Elemento.transform.renderer.enabled = false;
@@ -44,13 +53,18 @@ public class Bomba : ElementoTableroEstatico {
 	}
 
 	override
-	public bool ParaAvanceExplosion() {
+	public bool ParaAvanceLlama() {
 		return false;
 	}
 
 	override
 	public bool EsObtenible() {
 		return false;
+	}
+
+	override
+	public string ToString() {
+		return BombaString;
 	}
 
 }

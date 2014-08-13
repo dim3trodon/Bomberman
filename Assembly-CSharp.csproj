@@ -54,13 +54,13 @@
      <Compile Include="Assets\Scripts\ElementosTablero\ElementoTableroEstatico.cs" />
      <Compile Include="Assets\Scripts\ElementosTablero\ElementoTableroMovil.cs" />
      <Compile Include="Assets\Scripts\ElementosTablero\Enemigo.cs" />
-     <Compile Include="Assets\Scripts\ElementosTablero\Explosion.cs" />
      <Compile Include="Assets\Scripts\ElementosTablero\Item.cs" />
      <Compile Include="Assets\Scripts\ElementosTablero\ItemBomba.cs" />
      <Compile Include="Assets\Scripts\ElementosTablero\ItemBombaDorada.cs" />
      <Compile Include="Assets\Scripts\ElementosTablero\ItemBotas.cs" />
      <Compile Include="Assets\Scripts\ElementosTablero\ItemLlama.cs" />
      <Compile Include="Assets\Scripts\ElementosTablero\Jugador.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\Llama.cs" />
      <Compile Include="Assets\Scripts\ElementosTablero\Puerta.cs" />
      <Compile Include="Assets\Scripts\Movimiento\Movimiento.cs" />
      <Compile Include="Assets\Scripts\Movimiento\MovimientoEnemigo.cs" />

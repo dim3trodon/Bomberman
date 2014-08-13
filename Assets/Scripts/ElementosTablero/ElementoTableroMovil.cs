@@ -1,3 +1,8 @@
+// Clase abstracta de la que heredan todos los elementos moviles del tablero.
+// Los items moviles son atravesables, destruibles y paran el avance de la 
+// llama. No pueden ser obtenidos (esto no es Pokemon).
+// Version: 1.0
+// Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
 using UnityEngine;
 using System.Collections;
 
@@ -8,11 +13,11 @@ public abstract class ElementoTableroMovil : ElementoTablero {
 	}
 
 	protected int GetXTablero() {
-		return Elemento.GetComponent<Movimiento>().X;
+		return Elemento.GetComponent<Movimiento>().J;
 	}
 
 	protected int GetZTablero() {
-		return Elemento.GetComponent<Movimiento>().Z;
+		return Elemento.GetComponent<Movimiento>().I;
 	}
 
 	public void MoverA(int x, int z) {
@@ -30,7 +35,7 @@ public abstract class ElementoTableroMovil : ElementoTablero {
 	}
 
 	override
-	public bool ParaAvanceExplosion() {
+	public bool ParaAvanceLlama() {
 		return true;
 	}
 
@@ -41,7 +46,7 @@ public abstract class ElementoTableroMovil : ElementoTablero {
 
 	override
 	public void Obtener() {
-		Debug.Log("Un " + ToString() + " no se puede obtener");
+		Debug.LogError("Un " + ToString() + " no se puede obtener");
 	}
 
 }

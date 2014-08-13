@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+// Clase abstracta de la que heredan todos los elementos del tablero.
+// Los elementos del tablero necesitan de un GameObject para tener 
+// presencia visual en el tablero. Esto es Elemento.
+// Version: 1.0
+// Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
+using UnityEngine;
 using System.Collections;
 
 public abstract class ElementoTablero {
@@ -25,7 +30,7 @@ public abstract class ElementoTablero {
 
 	public abstract bool EsEnemigo();
 
-	public abstract bool ParaAvanceExplosion();
+	public abstract bool ParaAvanceLlama();
 
 	public abstract bool EsObtenible();
 

@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿// Representa un enemigo. Puede ser destruido y hace daño al jugador cuando es
+// tocado por este.
+// Version: 1.0
+// Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
+using UnityEngine;
 using System.Collections;
 
 public class Enemigo : ElementoTableroMovil {
+
+	public const string EnemigoString = "Enemigo";
 
 	public Enemigo(GameObject elemento):base(elemento) {}
 
@@ -22,5 +28,10 @@ public class Enemigo : ElementoTableroMovil {
 	override
 	public bool EsEnemigo() {
 		return true;
+	}
+
+	override
+	public string ToString() {
+		return EnemigoString;
 	}
 }

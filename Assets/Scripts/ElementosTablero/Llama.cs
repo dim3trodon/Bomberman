@@ -1,23 +1,23 @@
-﻿// Elemento del tablero que permite al jugador pasar de fase. 
-// Puede ser destruido, no supone un obstaculo para los personajes ni para
-// el avance de la llama. No hace daño cuando es tocado por el jugador y 
-// no puede ser obtenido por este. 
+﻿// Llama que aparece cuando una bomba detona.
+// No es un obstaculo para el jugador y es destruible, pero mata al jugador
+// cuando es tocado por esta. Una llama no para el avance de otra llama y 
+// esta no puede ser obtenida por el jugador.
 // Version: 1.0
 // Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
 using UnityEngine;
 using System.Collections;
 
-public class Puerta : ElementoTablero {
+public class Llama : ElementoTablero {
 
-	public const string PuertaString = "Puerta";
+	public const string LlamaString = "Llama";
 
-	public Puerta(GameObject elemento):base(elemento) {}
+	public Llama(GameObject elemento):base(elemento) {}
 
 	override
 	public void Destruir() {
 		GameObject.Destroy(Elemento);
 	}
-
+	
 	override
 	public bool EsObstaculo() {
 		return false;
@@ -25,19 +25,19 @@ public class Puerta : ElementoTablero {
 	
 	override
 	public bool EsDestruible() {
-		return false;
-	}
-	
-	override
-	public bool ParaAvanceLlama() {
-		return false;
+		return true;
 	}
 	
 	override
 	public bool EsEnemigo() {
+		return true;
+	}
+
+	override
+	public bool ParaAvanceLlama() {
 		return false;
 	}
-	
+
 	override
 	public bool EsObtenible() {
 		return false;
@@ -50,7 +50,7 @@ public class Puerta : ElementoTablero {
 
 	override
 	public string ToString() {
-		return PuertaString;
+		return LlamaString;
 	}
 
 }

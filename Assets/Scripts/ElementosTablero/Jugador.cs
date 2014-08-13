@@ -1,3 +1,7 @@
+// Representa al jugador. Puede ser destruido y no es enemigo (aunque
+// esto ultimo es irrelevante).
+// Version: 1.0
+// Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
 using UnityEngine;
 using System.Collections;
 

@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+// Matriz que almacena en cada momento el contenido de cada casilla
+// del tablero. Debe ser actualizado por Control.
+// Version: 1.0
+// Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
+using UnityEngine;
 using System.Collections;
 
 public class Tablero {
@@ -13,7 +17,7 @@ public class Tablero {
 		get {
 			return ancho;
 		}
-		set {
+		private set {
 			ancho = value;
 		}
 	}
@@ -23,7 +27,7 @@ public class Tablero {
 		get {
 			return alto;
 		}
-		set {
+		private set {
 			alto = value;
 		}
 	}
@@ -34,73 +38,10 @@ public class Tablero {
 		tablero = new Casilla[Alto][];
 	}
 
-	public Casilla GetCasilla(int i, int j) {
-		return tablero[i][j];
-	}
-
-	public ArrayList GetCasillasVacias() {
-		ArrayList casillasVacias = new ArrayList();
-		for(int i = 0; i < Alto; i++) {
-			for(int j = 0; j < Ancho; j++) {
-				if(tablero[i][j].NumElementos() == 0) {
-					casillasVacias.Add(tablero[i][j]);
-				}
-			}
-		}
-		return casillasVacias;
-	}
-
-	public ArrayList GetCasillasConCajas() {
-		ArrayList casillasConCajas = new ArrayList();
-		for(int i = 0; i < Alto; i++) {
-			for(int j = 0; j < Ancho; j++) {
-				if(tablero[i][j].HayCaja()) {
-					casillasConCajas.Add(tablero[i][j]);
-				}
-			}
-		}
-		return casillasConCajas;
-	}
-
-	public bool HayObstaculoEn(int i, int j) {
-		Casilla casilla = GetCasilla(i, j);
-		return casilla == null ? false : casilla.HayObstaculo();
-	}
-
-	public bool HayEnemigoEn(int i, int j) {
-		Casilla casilla = GetCasilla(i, j);
-		return casilla == null ? false : casilla.HayEnemigo();
-	}
-
-	public bool HayExplosionEn(int i, int j) {
-		Casilla casilla = GetCasilla(i, j);
-		return casilla == null ? false : casilla.HayExplosion();
-	}
-
-	public bool HayBombaEn(int i, int j) {
-		Casilla casilla = GetCasilla(i, j);
-		return casilla == null ? false : casilla.HayBomba();
-	}
-
-	public bool HayElementoQuePareExplosion(int i, int j) {
-		Casilla casilla = GetCasilla(i, j);
-		return casilla == null ? false : casilla.HayElementoQuePareExplosion();
-	}
-
-	public bool HayItemEn(int i, int j) {
-		Casilla casilla = GetCasilla(i, j);
-		return casilla == null ? false : casilla.HayItem();
-	}
-
-	public bool HayPuertaEn(int i, int j) {
-		Casilla casilla = GetCasilla(i, j);
-		return casilla == null ? false : casilla.HayPuerta();
-	}
-
-	public void ObtenerItemDe(int i, int j) {
-		GetCasilla(i, j).ObtenerItem();
-	}
-
+	/*
+	 * Metodos para gestionar el contenido del tablero
+	 */
+	// AddFila se usa para inicializar el tablero desde Control
 	public void AddFila(Casilla[] fila) {
 		if(fila.Length != Ancho) {
 			Debug.LogError("fila.Length debe ser " + Ancho + " pero es " + fila.Length);
@@ -113,18 +54,33 @@ public class Tablero {
 		}
 	}
 
+	public Casilla GetCasilla(int i, int j) {
+		return tablero[i][j];
+	}
+	
 	public Casilla SetCasilla(int i, int j, Casilla casilla) {
 		tablero[i][j] = casilla;
 		tablero[i][j].SetPos(i, j);
 		return casilla;
 	}
-
+	
 	private void EliminarCasilla(int i, int j) {
 		if(tablero[i][j] != null) {
 			tablero[i][j].DestruirTodosElementos();
 		}
 	}
 
+	// Elimina todo el contenido de las casillas del tablero
+	public void Eliminar() {
+		for(int i = 0; i < Alto; i++) {
+			for(int j = 0; j < Ancho; j++) {
+				tablero[i][j].DestruirTodosElementos();
+			}
+		}
+	}
+
+	// Reserva unas casillas determinadas para que el jugador no
+	// quede atrapado al principio del juego.
 	public void ReservarCasillasParaJugador() {
 		EliminarCasilla(1, 1);
 		EliminarCasilla(1, 2);
@@ -133,12 +89,78 @@ public class Tablero {
 		EliminarCasilla(3, 1);
 	}
 
-	public void Eliminar() {
+	/*
+	 * Obtencion de grupos de casillas con una caracteristica comun.
+	 */
+	// Devuelve un ArrayList con las casillas que no tienen contenido.
+	// En estas casillas se pueden instanciar enemigos.
+	public ArrayList GetCasillasVacias() {
+		ArrayList casillasVacias = new ArrayList();
 		for(int i = 0; i < Alto; i++) {
 			for(int j = 0; j < Ancho; j++) {
-				tablero[i][j].DestruirTodosElementos();
+				if(tablero[i][j].NumElementos() == 0) {
+					casillasVacias.Add(tablero[i][j]);
+				}
 			}
 		}
+		return casillasVacias;
+	}
+
+	// Devuelve un ArrayList con las casillas que contienen una caja.
+	// En estas casillas se pueden instanciar items.
+	public ArrayList GetCasillasConCajas() {
+		ArrayList casillasConCajas = new ArrayList();
+		for(int i = 0; i < Alto; i++) {
+			for(int j = 0; j < Ancho; j++) {
+				if(tablero[i][j].HayCaja()) {
+					casillasConCajas.Add(tablero[i][j]);
+				}
+			}
+		}
+		return casillasConCajas;
+	}
+
+	/**
+	 * Comprobacion de tipos de elementos en una casilla
+	 */
+	public bool HayObstaculoEn(int i, int j) {
+		Casilla casilla = GetCasilla(i, j);
+		return casilla == null ? false : casilla.HayObstaculo();
+	}
+
+	public bool HayEnemigoEn(int i, int j) {
+		Casilla casilla = GetCasilla(i, j);
+		return casilla == null ? false : casilla.HayEnemigo();
+	}
+
+	public bool HayLlamaEn(int i, int j) {
+		Casilla casilla = GetCasilla(i, j);
+		return casilla == null ? false : casilla.HayLlama();
+	}
+
+	public bool HayBombaEn(int i, int j) {
+		Casilla casilla = GetCasilla(i, j);
+		return casilla == null ? false : casilla.HayBomba();
+	}
+
+	public bool HayElementoQuePareLlama(int i, int j) {
+		Casilla casilla = GetCasilla(i, j);
+		return casilla == null ? false : casilla.HayElementoQuePareLlama();
+	}
+
+	public bool HayItemEn(int i, int j) {
+		Casilla casilla = GetCasilla(i, j);
+		return casilla == null ? false : casilla.HayItem();
+	}
+
+	public bool HayPuertaEn(int i, int j) {
+		Casilla casilla = GetCasilla(i, j);
+		return casilla == null ? false : casilla.HayPuerta();
+	}
+
+
+	public void ObtenerItemDe(int i, int j) {
+		GetCasilla(i, j).ObtenerItem();
 	}
 	
 }

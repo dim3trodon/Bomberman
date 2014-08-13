@@ -1,4 +1,14 @@
-﻿using UnityEngine;
+// Clase que mueve un enemigo.
+// Un enemigo se mueve en un sentido constantemente hasta que encuentra
+// un obstaculo, que lo hace cambiar de sentido. Tambien tiene una
+// pequeña probabilidad de cambiar de sentido antes de encontrar
+// un obstaculo.
+// Tambien se mueve en dos modos: vertical y horizontalmente. Cada vez
+// que se mueve hay una probabilidad de cambiar ese modo si el enemigo
+// tiene suficiente espacio para cambiar de modo.
+// Version: 1.0
+// Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
+using UnityEngine;
 using System.Collections;
 
 public class MovimientoEnemigo : Movimiento {
@@ -9,6 +19,7 @@ public class MovimientoEnemigo : Movimiento {
 	public const int SentidoA = 0;
 	public const int SentidoB = 1;
 
+	// Probabilidades por defecto que hacen cambiar al enemigo de modo y sentido de recorrido
 	public const float ProbCambiarModoRecorridoDefecto = 0.2f;
 	public const float ProbCambiarSentidoRecorridoDefecto = 0.05f;
 
@@ -27,6 +38,7 @@ public class MovimientoEnemigo : Movimiento {
 		}
 	}
 
+	// Indica si el enemigo se mueve en un sentido o en otro
 	private int sentidoRecorrido;
 	public int SentidoRecorrido {
 		get {
@@ -53,6 +65,7 @@ public class MovimientoEnemigo : Movimiento {
 		}
 	}
 
+	// Probabilidad para que el enemigo cambie de sentido de recorrido.
 	private float probCambiarSentidoRecorrido = ProbCambiarSentidoRecorridoDefecto;
 	public float ProbCambiarSentidoRecorrido {
 		get {
@@ -82,13 +95,13 @@ public class MovimientoEnemigo : Movimiento {
 	// Comprueba si el enemigo tiene al menos una casilla a la que moverse
 	// verticalmente
 	private bool HayEspacioVertical() {
-		return !Control.HayObstaculoEn(x, z - 1) || !Control.HayObstaculoEn(x, z + 1);
+		return !Control.HayObstaculoEn(j, i - 1) || !Control.HayObstaculoEn(j, i + 1);
 	}
 
 	// Comprueba si el enemigo tiene al menos una casilla a la que moverse
 	// horizontalmente
 	private bool HayEspacioHorizontal() {
-		return !Control.HayObstaculoEn(x - 1, z) || !Control.HayObstaculoEn(x + 1, z);
+		return !Control.HayObstaculoEn(j - 1, i) || !Control.HayObstaculoEn(j + 1, i);
 	}
 
 	// Comprueba si al cambiar de modo de recorrido el enemigo se quedara atascado
@@ -102,12 +115,13 @@ public class MovimientoEnemigo : Movimiento {
 		}
 	}
 
-	// Update is called once per frame
+	// Mueve al enemigo en cada frame
 	void Update () {
-		if(Control.HayExplosionEn(X, Z)) {
-			Control.EliminarEnemigoDe(X, Z);
+		if(Control.HayLlamaEn(J, I)) {
+			Control.EliminarEnemigoDe(J, I);
 		} else if(!moviendose) {
-			if(SePuedeCambiarDeModoRecorrido() && Random.value < ProbCambiarModoRecorrido) {
+			if(SePuedeCambiarDeModoRecorrido() 
+			   && Random.value < ProbCambiarModoRecorrido) {
 				CambiarModoRecorrido();
 			}
 			if(Random.value < ProbCambiarSentidoRecorrido) {
@@ -115,28 +129,28 @@ public class MovimientoEnemigo : Movimiento {
 			}
 			if(ModoRecorrido == Horizontal) {
 				if(sentidoRecorrido == SentidoA) {
-					xFinal = x - 1;
+					jFinal = j - 1;
 					horaInicio = Time.time;
 				} else if(sentidoRecorrido == SentidoB) {
-					xFinal = x + 1;
+					jFinal = j + 1;
 					horaInicio = Time.time;
 				}
 			} else if(ModoRecorrido == Vertical) {
 				if(sentidoRecorrido == SentidoA) {
-					zFinal = z - 1;
+					iFinal = i - 1;
 					horaInicio = Time.time;
 				} else if(sentidoRecorrido == SentidoB) {
-					zFinal = z + 1;
+					iFinal = i + 1;
 					horaInicio = Time.time;
 				}
 			}
-			if((x != xFinal) || (z != zFinal)) {
+			if((j != jFinal) || (i != iFinal)) {
 				// Si hay un obstaculo, no moverse (xFinal y zFinal vuelve
 				// a ser la posicion actual del jugador) y cambiar el 
 				// sentido del recorrido
-				if(Control.HayObstaculoEn(xFinal, zFinal)) {
-					xFinal = x;
-					zFinal = z;
+				if(Control.HayObstaculoEn(jFinal, iFinal)) {
+					jFinal = j;
+					iFinal = i;
 					CambiarSentidoRecorrido();
 				} else {
 					moviendose = true;

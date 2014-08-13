@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+// Clase abstracta de la que heredan todos los elementos estaticos del tablero.
+// Todos los elementos estaticos del tablero son obstaculos, no hacen daño 
+// al ser tocados por el usuarios, paran el avance de la llama y no pueden
+// ser obtenidos.
+// Version: 1.0
+// Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
+using UnityEngine;
 using System.Collections;
 
 public abstract class ElementoTableroEstatico : ElementoTablero {
@@ -21,7 +27,7 @@ public abstract class ElementoTableroEstatico : ElementoTablero {
 	}
 
 	override
-	public bool ParaAvanceExplosion() {
+	public bool ParaAvanceLlama() {
 		return true;
 	}
 	

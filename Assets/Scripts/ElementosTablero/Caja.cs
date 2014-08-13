@@ -1,16 +1,18 @@
+// Caja del tablero. Puede ser destruida por una bomba.
+// Version: 1.0
+// Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
 using UnityEngine;
 using System.Collections;
 
 public class Caja : ElementoTableroEstatico {
 
+	public const string CajaString = "Caja";
+
+	public Caja(GameObject elemento):base(elemento) {}
+
 	override
 	public void Destruir() {
 		GameObject.Destroy(Elemento);
-	}
-
-	override
-	public bool EsObstaculo() {
-		return true;
 	}
 
 	override
@@ -19,19 +21,7 @@ public class Caja : ElementoTableroEstatico {
 	}
 
 	override
-	public bool EsEnemigo() {
-		return false;
+	public string ToString() {
+		return CajaString;
 	}
-
-	override
-	public bool ParaAvanceExplosion() {
-		return true;
-	}
-
-	override
-	public bool EsObtenible() {
-		return false;
-	}
-
-	public Caja(GameObject elemento):base(elemento) {}
 }

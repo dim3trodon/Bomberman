@@ -1,33 +1,38 @@
-﻿using UnityEngine;
+﻿// Clase abstracta de la que heredan todos las clases que permiten
+// el movimiento de un personaje.
+// Version: 1.0
+// Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
+using UnityEngine;
 using System.Collections;
 
-public class Movimiento : MonoBehaviour {
+public abstract class Movimiento : MonoBehaviour {
 
 	public const float VelocidadDefecto = 4.5f;
 
+	// Referencia al elemento del tablero que mueven
 	public ElementoTableroMovil refElementoTableroMovil;
 
-	protected int x;
-	public int X {
+	protected int j;
+	public int J {
 		get {
-			return x;
+			return j;
 		}
 		set {
-			x = value;
+			j = value;
 		}
 	}
-	protected int xFinal;
+	protected int jFinal;
 	
-	protected int z;
-	public int Z {
+	protected int i;
+	public int I {
 		get {
-			return z;
+			return i;
 		}
 		set {
-			z = value;
+			i = value;
 		}
 	}
-	protected int zFinal;
+	protected int iFinal;
 
 	protected float velocidad = VelocidadDefecto;
 	public float Velocidad {
@@ -46,25 +51,17 @@ public class Movimiento : MonoBehaviour {
 
 	protected bool nuevaPosicion = false;
 
-	protected int GetXTablero() {
+	protected int GetJTablero() {
 		return Control.GetJTablero(transform.position.x);
 	}
 
-	protected int GetZTablero() {
+	protected int GetITablero() {
 		return Control.GetITablero(transform.position.z);
 	}
 
-	protected void MoverElemento(int x, int z) {
-		if(!Control.HayObstaculoEn(x, z)) {
-			xFinal = x;
-			zFinal = z;
-			moviendose = true;
-		}
-	}
-
 	protected void InicializarPosicion() {
-		X = xFinal = GetXTablero();
-		Z = zFinal = GetZTablero();
+		J = jFinal = GetJTablero();
+		I = iFinal = GetITablero();
 	}
 
 	// Use this for initialization
@@ -74,22 +71,17 @@ public class Movimiento : MonoBehaviour {
 
 	protected void Lerp() {
 		float distCovered = (Time.time - horaInicio) * Velocidad;
-		transform.position = Vector3.Lerp(Control.GetPosicionReal(x, z),
-		                                           Control.GetPosicionReal(xFinal, zFinal),
+		transform.position = Vector3.Lerp(Control.GetPosicionReal(j, i),
+		                                           Control.GetPosicionReal(jFinal, iFinal),
 		                                           distCovered);
 		// Cuando el elemento se ha terminado de mover a la nueva posicion
-		if(transform.position == Control.GetPosicionReal(xFinal, zFinal)) {
+		if(transform.position == Control.GetPosicionReal(jFinal, iFinal)) {
 			// Actualizar posicion en Tablero
-			refElementoTableroMovil.MoverA(xFinal, zFinal);
-			X = xFinal;
-			Z = zFinal;
+			refElementoTableroMovil.MoverA(jFinal, iFinal);
+			J = jFinal;
+			I = iFinal;
 			moviendose = false;
 			nuevaPosicion = true;
 		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

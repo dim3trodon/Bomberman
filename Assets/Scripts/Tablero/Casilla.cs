@@ -1,10 +1,26 @@
-﻿using UnityEngine;
+// Casilla de un tablero. Puede contener un numero indeterminado de objetos
+// de la clase ElementoTablero.
+// Version: 1.0
+// Autor: Rodrigo Valladares Santana <rodriv_tf@hotmail.com> 
+using UnityEngine;
 using System.Collections;
 
 public class Casilla {
 
 	private ArrayList casilla;
 
+	public Casilla() {
+		casilla = new ArrayList();
+	}
+	
+	public Casilla(ElementoTablero elemento) {
+		casilla = new ArrayList();
+		casilla.Add(elemento);
+	}
+
+	/*
+	 * Posicion en el tablero.
+	 */
 	private int i;
 	public int I {
 		get {
@@ -14,7 +30,6 @@ public class Casilla {
 			i = value;
 		}
 	}
-
 	private int j;
 	public int J {
 		get {
@@ -24,7 +39,6 @@ public class Casilla {
 			j = value;
 		}
 	}
-
 	public void SetPos(int i, int j) {
 		I = i;
 		J = j;
@@ -34,22 +48,15 @@ public class Casilla {
 		return casilla.Count;
 	}
 
-	public Casilla() {
-		casilla = new ArrayList();
-	}
-
-	public Casilla(ElementoTablero elemento) {
-		casilla = new ArrayList();
-		casilla.Add(elemento);
-	}
-
-	public void LimpiarExplosion() {
+	/*
+	 * Eliminacion y destruccion de los elementos de la casilla
+	 */
+	// Elimina todos los objetos Explosion de la casilla
+	public void LimpiarLlama() {
 		ArrayList elementosQuitar = new ArrayList();
 		foreach(ElementoTablero elemento in casilla) {
-			if(elemento.ToString() == "Explosion") {
+			if(elemento.ToString() == Llama.LlamaString) {
 				elementosQuitar.Add(elemento);
-			} else {
-				//elemento.Elemento.transform.renderer.material = null;
 			}
 		}
 		foreach(ElementoTablero elemento in elementosQuitar) {
@@ -57,9 +64,10 @@ public class Casilla {
 		}
 	}
 
+	// Elimina todos los objetos Enemigo de la casilla
 	public void EliminarEnemigo() {
 		int i = 0;
-		while(i < casilla.Count && casilla[i].ToString() != "Enemigo") {
+		while(i < casilla.Count && casilla[i].ToString() != Enemigo.EnemigoString) {
 			i++;
 		}
 		if(i != casilla.Count) {
@@ -68,11 +76,11 @@ public class Casilla {
 		}
 	}
 
-	// Destruye Cajas
+	// Destruye todas las Cajas de la casilla
 	public void DestruirCajas() {
 		ArrayList elementosDestruir = new ArrayList();
 		foreach(ElementoTablero elemento in casilla) {
-			if(elemento.ToString() == "Caja") {
+			if(elemento.ToString() == Caja.CajaString) {
 				elementosDestruir.Add(elemento);
 				elemento.Destruir();
 			}
@@ -82,6 +90,7 @@ public class Casilla {
 		}
 	}
 
+	// Destruye todos los elementos de la casilla
 	public void DestruirTodosElementos() {
 		foreach(ElementoTablero elemento in casilla) {
 			elemento.Destruir();
@@ -89,6 +98,9 @@ public class Casilla {
 		casilla.Clear();
 	}
 
+	/*
+	 * Metodos para añadir y quitar elementos del ArrayList de la casilla
+	 */
 	public void AddElemento(ElementoTablero elemento) {
 		casilla.Add(elemento);
 	}
@@ -98,10 +110,14 @@ public class Casilla {
 		if(i >= 0) {
 			casilla.Remove(elemento);
 		} else {
-			Debug.LogError("No se encuentra el elemento " + elemento.ToString() + " en la casilla");
+			Debug.LogError("No se encuentra el elemento " + elemento.ToString() 
+			               + " en la casilla");
 		}
 	}
 
+	/*
+	 * Comprobar si en la casilla hay un tipo de objeto dado.
+	 */
 	public bool HayObstaculo() {
 		foreach(ElementoTablero elemento in casilla) {
 			if(elemento.EsObstaculo()) {
@@ -129,9 +145,9 @@ public class Casilla {
 		return false;
 	}
 
-	public bool HayExplosion() {
+	public bool HayLlama() {
 		foreach(ElementoTablero elemento in casilla) {
-			if(elemento.ToString() == "Explosion") {
+			if(elemento.ToString() == Llama.LlamaString) {
 				return true;
 			}
 		}
@@ -140,16 +156,16 @@ public class Casilla {
 
 	public bool HayBomba() {
 		foreach(ElementoTablero elemento in casilla) {
-			if(elemento.ToString() == "Bomba") {
+			if(elemento.ToString() == Bomba.BombaString) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public bool HayElementoQuePareExplosion() {
+	public bool HayElementoQuePareLlama() {
 		foreach(ElementoTablero elemento in casilla) {
-			if(elemento.ParaAvanceExplosion()) {
+			if(elemento.ParaAvanceLlama()) {
 				return true;
 			}
 		}
@@ -165,21 +181,9 @@ public class Casilla {
 		return false;
 	}
 
-	public void ObtenerItem() {
-		int i = 0;
-		while(i < casilla.Count && !(casilla[i] as ElementoTablero).EsObtenible()) {
-			i++;
-		}
-		if(i != casilla.Count) {
-			(casilla[i] as ElementoTablero).Obtener();
-			//(casilla[i] as ElementoTablero).Destruir();
-			QuitarElemento(casilla[i] as ElementoTablero);
-		}
-	}
-
 	public bool HayPuerta() {
 		foreach(ElementoTablero elemento in casilla) {
-			if(elemento.ToString() == "Puerta") {
+			if(elemento.ToString() == Puerta.PuertaString) {
 				return true;
 			}
 		}
@@ -188,11 +192,23 @@ public class Casilla {
 
 	public bool HayCaja() {
 		foreach(ElementoTablero elemento in casilla) {
-			if(elemento.ToString() == "Caja") {
+			if(elemento.ToString() == Caja.CajaString) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	// El jugador obtiene el item que se encuentra en la casilla
+	public void ObtenerItem() {
+		int i = 0;
+		while(i < casilla.Count && !(casilla[i] as ElementoTablero).EsObtenible()) {
+			i++;
+		}
+		if(i != casilla.Count) {
+			(casilla[i] as ElementoTablero).Obtener();
+			QuitarElemento(casilla[i] as ElementoTablero);
+		}
 	}
 	
 }
