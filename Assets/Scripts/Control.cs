@@ -7,7 +7,7 @@ using System.Collections;
 
 public class Control : MonoBehaviour {
 	/*
-	 * Variables y constantes relativas del tablero
+	 * Variables y constantes relativas al tablero
 	 */
 	// Posicion Y de los GameObject
 	public const float Y = 0.5f;
@@ -27,6 +27,8 @@ public class Control : MonoBehaviour {
 	public const float DistanciaParaInstanciarEnemigos = 5f;
 	// Unidad en la que aumenta la velocidad del jugador al conseguir las botas
 	public const float UnidadVelocidad = 5f;
+	// Fase en la que se encuentra el jugador
+	private static int fase = 0;
 
 	// Tablero donde se instancian los items, bloques, cajas, etc. Esta formado por objetos
 	// de tipo Casilla.
@@ -46,12 +48,18 @@ public class Control : MonoBehaviour {
 			numEnemigos = value;
 		}
 	}
+	// Tipos de enemigos que se instancian en cada fase
+	private static int[] EnemigosFase0 = {0, 0, 0};
+	private static int[] EnemigosFase1 = {0, 0, 1};
+	private static int[] EnemigosFase2 = {0, 1, 1};
+	private static int[] EnemigosFase3 = {1, 1, 1};
+	private static int[] EnemigosFase4 = {0, 1, 2};
+	private static int[][] EnemigosFase = {EnemigosFase0, EnemigosFase1, EnemigosFase2, EnemigosFase3, EnemigosFase4};
 	// Numero de items que se colocan en el tablero (incluida la puerta)
 	public const int NumItemsTablero = 5;
 	// Probabilidad de que en una casilla vacia se instancie una caja
 	public const float ProbCaja = 0.33f;
-	// Velocidad de enemigo por defecto
-	private const float VelocidadEnemigoDefecto = 2f;
+
 
 	/*
 	 * Variables y metodoss usados por los items
@@ -104,6 +112,9 @@ public class Control : MonoBehaviour {
 
 	// Instancia del jugador
 	private static ElementoTableroMovil jugador;
+
+	// Si es true, el jugador no muere al entrar en contacto con una bomba o un enemigo
+	private static bool modoInvencible = false;
 
 	// Instancia de Control (se inicializa en Awake) para poder llamar a corutinas desde
 	// un metodo estatico. 
@@ -197,6 +208,7 @@ public class Control : MonoBehaviour {
 		ArrayList casillasVacias = tablero.GetCasillasVacias();
 		// Contiene las casillas en las que se puede instanciar un enemigo
 		ArrayList casillasValidas = new ArrayList();
+		int tipoEnemigo = 0;
 		foreach(Casilla casilla in casillasVacias) {
 			Vector2 posJugador = new Vector2(IInicialJugador, JInicialJugador);
 			// Se delimita una region en la que pueden aparecer enemigos al principio del juego
@@ -205,13 +217,13 @@ public class Control : MonoBehaviour {
 				casillasValidas.Add(casilla);
 			}
 		}
-		// Se instancian los enemigos
+		// Se instancian los enemigos segun el tipo de fase
 		for(int i = 0; i < NumEnemigos; i++) {
 			Casilla casilla = casillasValidas[Random.Range(0, casillasValidas.Count)] as Casilla;
-			GameObject enemigo = InstanciarEnemigo(casilla.I, casilla.J);
-			enemigo.GetComponent<Movimiento>().Velocidad = VelocidadEnemigoDefecto;
-			casilla.AddElemento(new Enemigo(enemigo));
+			GameObject enemigo = InstanciarEnemigo(casilla.I, casilla.J, EnemigosFase[fase][tipoEnemigo]);
+			casilla.AddElemento(new Enemigo(enemigo, EnemigosFase[fase][tipoEnemigo]));
 			casillasValidas.Remove(casilla);
+			tipoEnemigo++;
 		}
 	}
 
@@ -259,16 +271,6 @@ public class Control : MonoBehaviour {
 	// Indica si el jugador ha eliminado todos los enemigos y puede pasar de fase.
 	public static bool SePuedePasarDeFase() {
 		return numEnemigos == 0;
-	}
-	
-	// TODO Pasa a la siguiente fase
-	public static void SiguienteFase() {
-		if(SePuedePasarDeFase()) {
-			Debug.Log("Siguiente fase");
-			Application.LoadLevel("felicidades");
-		} else {
-			Debug.LogError("Aun no se puede pasar de fase. Enemigos: " + numEnemigos);
-		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////
@@ -492,9 +494,9 @@ public class Control : MonoBehaviour {
 	}
 
 	// Instancia un enemigo en la posicion i, j
-	private static GameObject InstanciarEnemigo(int i, int j) {
+	private static GameObject InstanciarEnemigo(int i, int j, int tipo) {
 		Vector3 posReal = GetPosicionReal(i, j);
-		return GameObject.Instantiate(Resources.Load("Prefabs/Enemigo"), posReal, Quaternion.identity) as GameObject;
+		return GameObject.Instantiate(Resources.Load("Prefabs/Enemigo" + tipo), posReal, Quaternion.identity) as GameObject;
 	}
 
 	// Instancia una bomba en la posicion i, j
@@ -547,9 +549,27 @@ public class Control : MonoBehaviour {
 	// Metodo que se llama cuando el jugador pierde
 	public static void FinDelJuego() {
 		Debug.Log("Fin del juego");
-		/*StartStaticCoroutine(MostrarPantallaNegra(0.5f));
-		instancia.EliminarTablero();
-		instancia.InicializarFase();*/
+		if(!modoInvencible) {
+			StartStaticCoroutine(MostrarPantallaNegra(0.5f));
+			instancia.EliminarTablero();
+			instancia.InicializarFase();
+		}
+	}
+
+	// TODO Pasa a la siguiente fase
+	public static void SiguienteFase() {
+		if(SePuedePasarDeFase()) {
+			fase++;
+			if(fase < EnemigosFase.Length) {
+				Debug.Log("Siguiente fase");
+				instancia.EliminarTablero();
+				instancia.InicializarFase();
+			} else {
+				Application.LoadLevel("felicidades");
+			}
+		} else {
+			Debug.LogError("Aun no se puede pasar de fase. Enemigos: " + numEnemigos);
+		}
 	}
 
 	// Corutina que espera unos segundos determinados
@@ -572,14 +592,20 @@ public class Control : MonoBehaviour {
 
 	// Muestra informacion de los items del personaje y los enemigos que quedan en la fase
 	void OnGUI() {
+		GUILayout.Label("Fase: " + (fase + 1) + (modoInvencible ? " I" : ""));
 		GUILayout.Label("Enemigos: " + NumEnemigos);
-		GUILayout.Label("Bombas: " + bolsaBombas);
+		GUILayout.Label("Bombas: " + bolsaBombas + (LlamaAtraviesaCajas ? " + D" : ""));
 		GUILayout.Label("Velocidad: " + 
 		                ((jugador.Elemento.GetComponent<MovimientoJugador>().Velocidad 
 		  - Movimiento.VelocidadDefecto) / UnidadVelocidad + 1));
 		GUILayout.Label("Llama: " + rangoLlama);
-		if(LlamaAtraviesaCajas) {
-			GUILayout.Label("Bomba dorada");
+	}
+
+	void Update() {
+		if(Input.GetKeyDown(KeyCode.I)) {
+			modoInvencible = !modoInvencible;
+			Debug.Log("Modo invencible = " + modoInvencible);
 		}
 	}
+
 }

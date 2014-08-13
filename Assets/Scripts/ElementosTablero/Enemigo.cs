@@ -9,15 +9,20 @@ public class Enemigo : ElementoTableroMovil {
 
 	public const string EnemigoString = "Enemigo";
 
-	public Enemigo(GameObject elemento):base(elemento) {}
+	private static float[] velocidadEnemigoPorTipo = {MovimientoEnemigo.VelocidadEnemigoDefecto, 2.5f, 4f};
+	private static float[] probCambiarModoRecorridoPorTipo = {MovimientoEnemigo.ProbCambiarModoRecorridoDefecto, 0.5f, 0.3f};
+	private static float[] probCambiarSentidoRecorridoPorTipo = {MovimientoEnemigo.ProbCambiarSentidoRecorridoDefecto, 0.01f, 0.2f};
 
-	public Enemigo(GameObject elemento, float velocidad):base(elemento) {
-		Elemento.GetComponent<MovimientoEnemigo>().Velocidad = velocidad;
-	}
+	public const int CantidadTipos = 3;
 
-	public Enemigo(GameObject elemento, float velocidad, int modoRecorrido):base(elemento) {
-		Elemento.GetComponent<MovimientoEnemigo>().Velocidad = velocidad;
-		Elemento.GetComponent<MovimientoEnemigo>().ModoRecorrido = modoRecorrido;
+	public Enemigo(GameObject elemento, int tipo):base(elemento) {
+		if(tipo < CantidadTipos) {
+			Elemento.GetComponent<MovimientoEnemigo>().Velocidad = velocidadEnemigoPorTipo[tipo];
+			Elemento.GetComponent<MovimientoEnemigo>().ProbCambiarModoRecorrido = probCambiarModoRecorridoPorTipo[tipo];
+			Elemento.GetComponent<MovimientoEnemigo>().ProbCambiarSentidoRecorrido = probCambiarSentidoRecorridoPorTipo[tipo];
+		} else {
+			Debug.LogError(tipo + " no es un tipo de enemigo");
+		}
 	}
 
 	override

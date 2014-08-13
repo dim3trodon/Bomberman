@@ -19,6 +19,9 @@ public class MovimientoEnemigo : Movimiento {
 	public const int SentidoA = 0;
 	public const int SentidoB = 1;
 
+	// Velocidad de enemigo por defecto
+	public const float VelocidadEnemigoDefecto = 2f;
+
 	// Probabilidades por defecto que hacen cambiar al enemigo de modo y sentido de recorrido
 	public const float ProbCambiarModoRecorridoDefecto = 0.2f;
 	public const float ProbCambiarSentidoRecorridoDefecto = 0.05f;
