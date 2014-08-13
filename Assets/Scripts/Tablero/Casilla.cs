@@ -171,7 +171,7 @@ public class Casilla {
 			i++;
 		}
 		if(i != casilla.Count) {
-			(casilla[i] as Item).Obtener();
+			(casilla[i] as ElementoTablero).Obtener();
 			//(casilla[i] as ElementoTablero).Destruir();
 			QuitarElemento(casilla[i] as ElementoTablero);
 		}

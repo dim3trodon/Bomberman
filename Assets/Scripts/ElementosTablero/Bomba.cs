@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Bomba : ElementoTablero {
+public class Bomba : ElementoTableroEstatico {
 
 	public const float TiempoExplosion = 1.5f;
 

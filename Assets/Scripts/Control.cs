@@ -230,25 +230,25 @@ public class Control : MonoBehaviour {
 		pos = Random.Range(0, casillasConCajas.Count);
 		x = (casillasConCajas[pos] as Casilla).I;
 		z = (casillasConCajas[pos] as Casilla).J;
-		(casillasConCajas[pos] as Casilla).AddElemento(new Item(Item.Bomba, InstanciarItemBomba(x, z)));
+		(casillasConCajas[pos] as Casilla).AddElemento(new ItemBomba(InstanciarItemBomba(x, z)));
 		casillasConCajas.RemoveAt(pos);
 		// Añadir item botas
 		pos = Random.Range(0, casillasConCajas.Count);
 		x = (casillasConCajas[pos] as Casilla).I;
 		z = (casillasConCajas[pos] as Casilla).J;
-		(casillasConCajas[pos] as Casilla).AddElemento(new Item(Item.Botas, InstanciarItemBotas(x, z)));
+		(casillasConCajas[pos] as Casilla).AddElemento(new ItemBotas(InstanciarItemBotas(x, z)));
 		casillasConCajas.RemoveAt(pos);
 		// Añadir item llama
 		pos = Random.Range(0, casillasConCajas.Count);
 		x = (casillasConCajas[pos] as Casilla).I;
 		z = (casillasConCajas[pos] as Casilla).J;
-		(casillasConCajas[pos] as Casilla).AddElemento(new Item(Item.Llama, InstanciarItemLlama(x, z)));
+		(casillasConCajas[pos] as Casilla).AddElemento(new ItemLlama(InstanciarItemLlama(x, z)));
 		casillasConCajas.RemoveAt(pos);
 		// Añadir item bomba dorada
 		pos = Random.Range(0, casillasConCajas.Count);
 		x = (casillasConCajas[pos] as Casilla).I;
 		z = (casillasConCajas[pos] as Casilla).J;
-		(casillasConCajas[pos] as Casilla).AddElemento(new Item(Item.BombaDorada, InstanciarItemBombaDorada(x, z)));
+		(casillasConCajas[pos] as Casilla).AddElemento(new ItemBombaDorada(InstanciarItemBombaDorada(x, z)));
 		casillasConCajas.RemoveAt(pos);
 	}
 
@@ -518,12 +518,10 @@ public class Control : MonoBehaviour {
 	}
 
 	public static void FinDelJuego() {
-		//GameObject.Destroy(jugador.Elemento);
 		Debug.Log("Fin del juego");
-		//StartStaticCoroutine(Esperar(1f));
-		StartStaticCoroutine(MostrarPantallaNegra(0.5f));
+		/*StartStaticCoroutine(MostrarPantallaNegra(0.5f));
 		instancia.EliminarTablero();
-		instancia.InicializarFase();
+		instancia.InicializarFase();*/
 	}
 
 	public static Coroutine StartStaticCoroutine(IEnumerator rutina) {

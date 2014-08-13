@@ -39,4 +39,9 @@ public abstract class ElementoTableroMovil : ElementoTablero {
 		return false;
 	}
 
+	override
+	public void Obtener() {
+		Debug.Log("Un " + ToString() + " no se puede obtener");
+	}
+
 }

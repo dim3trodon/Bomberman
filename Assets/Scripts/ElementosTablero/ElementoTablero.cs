@@ -28,4 +28,6 @@ public abstract class ElementoTablero {
 	public abstract bool ParaAvanceExplosion();
 
 	public abstract bool EsObtenible();
+
+	public abstract void Obtener();
 }

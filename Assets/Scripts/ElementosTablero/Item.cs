@@ -1,15 +1,17 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class Explosion : ElementoTablero {
+public abstract class Item : ElementoTablero {
 
-	public Explosion(GameObject elemento):base(elemento) {}
+	public Item(GameObject elemento):base(elemento) {}
+
+	//public abstract void Obtener();
 
 	override
 	public void Destruir() {
 		GameObject.Destroy(Elemento);
 	}
-	
+
 	override
 	public bool EsObstaculo() {
 		return false;
@@ -17,21 +19,21 @@ public class Explosion : ElementoTablero {
 	
 	override
 	public bool EsDestruible() {
-		return true;
+		return false;
 	}
 	
-	override
-	public bool EsEnemigo() {
-		return true;
-	}
-
 	override
 	public bool ParaAvanceExplosion() {
 		return false;
 	}
 
 	override
-	public bool EsObtenible() {
+	public bool EsEnemigo() {
 		return false;
+	}
+
+	override
+	public bool EsObtenible() {
+		return true;
 	}
 }

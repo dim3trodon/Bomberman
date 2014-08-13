@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Caja : ElementoTablero {
+public class Caja : ElementoTableroEstatico {
 
 	override
 	public void Destruir() {

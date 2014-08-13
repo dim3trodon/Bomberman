@@ -46,22 +46,27 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Bloque.cs" />
-     <Compile Include="Assets\Scripts\Bomba.cs" />
-     <Compile Include="Assets\Scripts\Caja.cs" />
-     <Compile Include="Assets\Scripts\Casilla.cs" />
      <Compile Include="Assets\Scripts\Control.cs" />
-     <Compile Include="Assets\Scripts\ElementoTablero.cs" />
-     <Compile Include="Assets\Scripts\ElementoTableroMovil.cs" />
-     <Compile Include="Assets\Scripts\Enemigo.cs" />
-     <Compile Include="Assets\Scripts\Explosion.cs" />
-     <Compile Include="Assets\Scripts\Item.cs" />
-     <Compile Include="Assets\Scripts\Jugador.cs" />
-     <Compile Include="Assets\Scripts\Movimiento.cs" />
-     <Compile Include="Assets\Scripts\MovimientoEnemigo.cs" />
-     <Compile Include="Assets\Scripts\MovimientoJugador.cs" />
-     <Compile Include="Assets\Scripts\Puerta.cs" />
-     <Compile Include="Assets\Scripts\Tablero.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\Bloque.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\Bomba.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\Caja.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\ElementoTablero.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\ElementoTableroEstatico.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\ElementoTableroMovil.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\Enemigo.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\Explosion.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\Item.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\ItemBomba.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\ItemBombaDorada.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\ItemBotas.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\ItemLlama.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\Jugador.cs" />
+     <Compile Include="Assets\Scripts\ElementosTablero\Puerta.cs" />
+     <Compile Include="Assets\Scripts\Movimiento\Movimiento.cs" />
+     <Compile Include="Assets\Scripts\Movimiento\MovimientoEnemigo.cs" />
+     <Compile Include="Assets\Scripts\Movimiento\MovimientoJugador.cs" />
+     <Compile Include="Assets\Scripts\Tablero\Casilla.cs" />
+     <Compile Include="Assets\Scripts\Tablero\Tablero.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
