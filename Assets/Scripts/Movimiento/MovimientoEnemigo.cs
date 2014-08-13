@@ -95,13 +95,13 @@ public class MovimientoEnemigo : Movimiento {
 	// Comprueba si el enemigo tiene al menos una casilla a la que moverse
 	// verticalmente
 	private bool HayEspacioVertical() {
-		return !Control.HayObstaculoEn(j, i - 1) || !Control.HayObstaculoEn(j, i + 1);
+		return !Control.HayObstaculoEn(i - 1, j) || !Control.HayObstaculoEn(i + 1, j);
 	}
 
 	// Comprueba si el enemigo tiene al menos una casilla a la que moverse
 	// horizontalmente
 	private bool HayEspacioHorizontal() {
-		return !Control.HayObstaculoEn(j - 1, i) || !Control.HayObstaculoEn(j + 1, i);
+		return !Control.HayObstaculoEn(i, j - 1) || !Control.HayObstaculoEn(i, j + 1);
 	}
 
 	// Comprueba si al cambiar de modo de recorrido el enemigo se quedara atascado
@@ -117,8 +117,8 @@ public class MovimientoEnemigo : Movimiento {
 
 	// Mueve al enemigo en cada frame
 	void Update () {
-		if(Control.HayLlamaEn(J, I)) {
-			Control.EliminarEnemigoDe(J, I);
+		if(Control.HayLlamaEn(I, J)) {
+			Control.EliminarEnemigoDe(I, J);
 		} else if(!moviendose) {
 			if(SePuedeCambiarDeModoRecorrido() 
 			   && Random.value < ProbCambiarModoRecorrido) {
@@ -145,10 +145,10 @@ public class MovimientoEnemigo : Movimiento {
 				}
 			}
 			if((j != jFinal) || (i != iFinal)) {
-				// Si hay un obstaculo, no moverse (xFinal y zFinal vuelve
+				// Si hay un obstaculo, no moverse (iFinal y jFinal vuelve
 				// a ser la posicion actual del jugador) y cambiar el 
 				// sentido del recorrido
-				if(Control.HayObstaculoEn(jFinal, iFinal)) {
+				if(Control.HayObstaculoEn(iFinal, jFinal)) {
 					jFinal = j;
 					iFinal = i;
 					CambiarSentidoRecorrido();

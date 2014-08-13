@@ -71,13 +71,13 @@ public abstract class Movimiento : MonoBehaviour {
 
 	protected void Lerp() {
 		float distCovered = (Time.time - horaInicio) * Velocidad;
-		transform.position = Vector3.Lerp(Control.GetPosicionReal(j, i),
-		                                           Control.GetPosicionReal(jFinal, iFinal),
+		transform.position = Vector3.Lerp(Control.GetPosicionReal(i, j),
+		                                           Control.GetPosicionReal(iFinal, jFinal),
 		                                           distCovered);
 		// Cuando el elemento se ha terminado de mover a la nueva posicion
-		if(transform.position == Control.GetPosicionReal(jFinal, iFinal)) {
+		if(transform.position == Control.GetPosicionReal(iFinal, jFinal)) {
 			// Actualizar posicion en Tablero
-			refElementoTableroMovil.MoverA(jFinal, iFinal);
+			refElementoTableroMovil.MoverA(iFinal, jFinal);
 			J = jFinal;
 			I = iFinal;
 			moviendose = false;

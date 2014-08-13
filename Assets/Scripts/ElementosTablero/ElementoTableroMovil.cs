@@ -12,16 +12,16 @@ public abstract class ElementoTableroMovil : ElementoTablero {
 		elemento.GetComponent<Movimiento>().refElementoTableroMovil = this;
 	}
 
-	protected int GetXTablero() {
-		return Elemento.GetComponent<Movimiento>().J;
-	}
-
-	protected int GetZTablero() {
+	protected int GetITablero() {
 		return Elemento.GetComponent<Movimiento>().I;
 	}
 
-	public void MoverA(int x, int z) {
-		Control.MoverElementoA(GetXTablero(), GetZTablero(), x, z, this);
+	protected int GetJTablero() {
+		return Elemento.GetComponent<Movimiento>().J;
+	}
+
+	public void MoverA(int i, int j) {
+		Control.MoverElementoA(GetITablero(), GetJTablero(), i, j, this);
 	}
 
 	override

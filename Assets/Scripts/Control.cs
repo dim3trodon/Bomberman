@@ -221,33 +221,33 @@ public class Control : MonoBehaviour {
 		ArrayList casillasConCajas = tablero.GetCasillasConCajas();
 		// Añadir puerta
 		int pos = Random.Range(0, casillasConCajas.Count);
-		int x = (casillasConCajas[pos] as Casilla).I;
-		int z = (casillasConCajas[pos] as Casilla).J;
-		(casillasConCajas[pos] as Casilla).AddElemento(new Puerta(InstanciarPuerta(x, z)));
+		int i = (casillasConCajas[pos] as Casilla).I;
+		int j = (casillasConCajas[pos] as Casilla).J;
+		(casillasConCajas[pos] as Casilla).AddElemento(new Puerta(InstanciarPuerta(i, j)));
 		casillasConCajas.RemoveAt(pos);
 		// Añadir item bomba
 		pos = Random.Range(0, casillasConCajas.Count);
-		x = (casillasConCajas[pos] as Casilla).I;
-		z = (casillasConCajas[pos] as Casilla).J;
-		(casillasConCajas[pos] as Casilla).AddElemento(new ItemBomba(InstanciarItemBomba(x, z)));
+		i = (casillasConCajas[pos] as Casilla).I;
+		j = (casillasConCajas[pos] as Casilla).J;
+		(casillasConCajas[pos] as Casilla).AddElemento(new ItemBomba(InstanciarItemBomba(i, j)));
 		casillasConCajas.RemoveAt(pos);
 		// Añadir item botas
 		pos = Random.Range(0, casillasConCajas.Count);
-		x = (casillasConCajas[pos] as Casilla).I;
-		z = (casillasConCajas[pos] as Casilla).J;
-		(casillasConCajas[pos] as Casilla).AddElemento(new ItemBotas(InstanciarItemBotas(x, z)));
+		i = (casillasConCajas[pos] as Casilla).I;
+		j = (casillasConCajas[pos] as Casilla).J;
+		(casillasConCajas[pos] as Casilla).AddElemento(new ItemBotas(InstanciarItemBotas(i, j)));
 		casillasConCajas.RemoveAt(pos);
 		// Añadir item llama
 		pos = Random.Range(0, casillasConCajas.Count);
-		x = (casillasConCajas[pos] as Casilla).I;
-		z = (casillasConCajas[pos] as Casilla).J;
-		(casillasConCajas[pos] as Casilla).AddElemento(new ItemLlama(InstanciarItemLlama(x, z)));
+		i = (casillasConCajas[pos] as Casilla).I;
+		j = (casillasConCajas[pos] as Casilla).J;
+		(casillasConCajas[pos] as Casilla).AddElemento(new ItemLlama(InstanciarItemLlama(i, j)));
 		casillasConCajas.RemoveAt(pos);
 		// Añadir item bomba dorada
 		pos = Random.Range(0, casillasConCajas.Count);
-		x = (casillasConCajas[pos] as Casilla).I;
-		z = (casillasConCajas[pos] as Casilla).J;
-		(casillasConCajas[pos] as Casilla).AddElemento(new ItemBombaDorada(InstanciarItemBombaDorada(x, z)));
+		i = (casillasConCajas[pos] as Casilla).I;
+		j = (casillasConCajas[pos] as Casilla).J;
+		(casillasConCajas[pos] as Casilla).AddElemento(new ItemBombaDorada(InstanciarItemBombaDorada(i, j)));
 		casillasConCajas.RemoveAt(pos);
 	}
 
@@ -277,7 +277,7 @@ public class Control : MonoBehaviour {
 	// A partir de una posicion en la matriz del tablero, se obtiene la posicion
 	// real en el mundo 3D.
 	public static Vector3 GetPosicionReal(int i, int j) {
-		return new Vector3 ((i - XBase), Y, (ZBase - j));
+		return new Vector3 ((j - XBase), Y, (ZBase - i));
 	}
 	
 	// A partir de una posicion x real en el mundo 3D, se obtiene la posicion j
@@ -293,12 +293,8 @@ public class Control : MonoBehaviour {
 	}
 
 	// Mueve un elemento de una posicion inicial del tablero a una final. 
-	public static void MoverElementoA(int xInicio, int zInicio, int xFinal, int zFinal, 
+	public static void MoverElementoA(int iIni, int jIni, int iFin, int jFin, 
 	                                  ElementoTableroMovil elemento) {
-		int iIni = zInicio;
-		int jIni = xInicio;
-		int iFin = zFinal;
-		int jFin = xFinal;
 		Casilla casillaInicio = tablero.GetCasilla(iIni, jIni);
 		Casilla casillaFinal = tablero.GetCasilla(iFin, jFin);
 		if(casillaFinal == null) {
@@ -309,9 +305,7 @@ public class Control : MonoBehaviour {
 	}
 
 	// Elimina un enemigo del tablero
-	public static void EliminarEnemigoDe(int x, int z) {
-		int i = z;
-		int j = x;
+	public static void EliminarEnemigoDe(int i, int j) {
 		Casilla casilla = tablero.GetCasilla(i, j);
 		casilla.EliminarEnemigo();
 		NumEnemigos--;
@@ -321,45 +315,33 @@ public class Control : MonoBehaviour {
 	// Comprobacion de un tipo de elemento del tablero en una posicion     //
 	/////////////////////////////////////////////////////////////////////////
 
-	// Comprueba si hay un obstaculo en la posicion x, z del tablero
-	public static bool HayObstaculoEn(int x, int z) {
-		int i = z;
-		int j = x;
+	// Comprueba si hay un obstaculo en la posicion i, j del tablero
+	public static bool HayObstaculoEn(int i, int j) {
 		return tablero.HayObstaculoEn(i, j);
 	}
 	
-	// Comprueba si hay un enemigo en la posicion x, z del tablero
-	public static bool HayEnemigoEn(int x, int z) {
-		int i = z;
-		int j = x;
+	// Comprueba si hay un enemigo en la posicion i, j del tablero
+	public static bool HayEnemigoEn(int i, int j) {
 		return tablero.HayEnemigoEn(i, j);
 	}
 
-	// Comprueba si hay un item en la posicion x, z del tablero
-	public static bool HayItemEn(int x, int z) {
-		int i = z;
-		int j = x;
+	// Comprueba si hay un item en la posicion i, j del tablero
+	public static bool HayItemEn(int i, int j) {
 		return tablero.HayItemEn(i, j);
 	}
 
-	// Comprueba si hay una llama en la posicion x, z del tablero
-	public static bool HayLlamaEn(int x, int z) {
-		int i = z;
-		int j = x;
+	// Comprueba si hay una llama en la posicion i, j del tablero
+	public static bool HayLlamaEn(int i, int j) {
 		return tablero.HayLlamaEn(i, j);
 	}
 	
-	// Comprueba si hay una puerta en la posicion x, z del tablero
-	public static bool HayPuertaEn(int x, int z) {
-		int i = z;
-		int j = x;
+	// Comprueba si hay una puerta en la posicion i, j del tablero
+	public static bool HayPuertaEn(int i, int j) {
 		return tablero.HayPuertaEn(i, j);
 	}
 
-	// Se obtiene el item que se encuentra en la posicion x, z del tablero
-	public static void ObtenerItemDe(int x, int z) {
-		int i = z;
-		int j = x;
+	// Se obtiene el item que se encuentra en la posicion i, j del tablero
+	public static void ObtenerItemDe(int i, int j) {
 		tablero.ObtenerItemDe(i, j);
 	}
 
@@ -367,24 +349,20 @@ public class Control : MonoBehaviour {
 	// Metodos relativos a la bomba y su detonacion                        //
 	/////////////////////////////////////////////////////////////////////////
 
-	// Se instancia una bomba en la posicion x, z del tablero
-	public static void PonerBomba(int x, int z) {
-		int i = z;
-		int j = x;
+	// Se instancia una bomba en la posicion i, j del tablero
+	public static void PonerBomba(int i, int j) {
 		if(HayBombasDisponibles() && !tablero.HayBombaEn(i, j)) {
 			Casilla casilla = tablero.GetCasilla(i, j);
 			ReducirBombas();
 			if(casilla == null) {
 				casilla = tablero.SetCasilla(i, j, new Casilla());
 			}
-			casilla.AddElemento(new Bomba(InstanciarBomba(x, z)));
+			casilla.AddElemento(new Bomba(InstanciarBomba(i, j)));
 		}
 	}
 
-	// Se detona la bomba de la posicion x, z del tablero
-	public static void DetonarBomba(int x, int z, ElementoTablero bomba) {
-		int i = x;
-		int j = z;
+	// Se detona la bomba de la posicion i, j del tablero
+	public static void DetonarBomba(int i, int j, ElementoTablero bomba) {
 		tablero.GetCasilla(i, j).QuitarElemento(bomba);
 		IniciarExplosion(i, j);
 	}
@@ -500,83 +478,63 @@ public class Control : MonoBehaviour {
 		                              Quaternion.identity) as GameObject;
 	}
 
-	// Instancia un bloque en la posicion x, z
-	private GameObject InstanciarBloque(int x, int z) {
-		int i = z;
-		int j = x;
+	// Instancia un bloque en la posicion i, j
+	private GameObject InstanciarBloque(int i, int j) {
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Pared"), posReal, Quaternion.identity) as GameObject;
 	}
 	
-	// Instancia una caja en la posicion x, z
-	private GameObject InstanciarCaja(int x, int z) {
-		int i = z;
-		int j = x;
+	// Instancia una caja en la posicion i, j
+	private GameObject InstanciarCaja(int i, int j) {
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Caja"), posReal, Quaternion.identity) as GameObject;
 	}
 
-	// Instancia un enemigo en la posicion x, z
-	private static GameObject InstanciarEnemigo(int x, int z) {
-		int i = z;
-		int j = x;
+	// Instancia un enemigo en la posicion i, j
+	private static GameObject InstanciarEnemigo(int i, int j) {
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Enemigo"), posReal, Quaternion.identity) as GameObject;
 	}
 
-	// Instancia una bomba en la posicion x, z
-	private static GameObject InstanciarBomba(int x, int z) {
-		int i = x;
-		int j = z;
+	// Instancia una bomba en la posicion i, j
+	private static GameObject InstanciarBomba(int i, int j) {
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Bomba"), posReal, Quaternion.identity) as GameObject;
 	}
 
-	// Instancia una explosion en la posicion x, z
-	private static GameObject InstanciarExplosion(int x, int z) {
-		int i = z;
-		int j = x;
+	// Instancia una explosion en la posicion i, j
+	private static GameObject InstanciarExplosion(int i, int j) {
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Explosion"), posReal, Quaternion.identity) as GameObject;
 	}
 
-	// Instancia un item bomba en la posicion x, z
-	private static GameObject InstanciarItemBomba(int x, int z) {
-		int i = z;
-		int j = x;
+	// Instancia un item bomba en la posicion i, j
+	private static GameObject InstanciarItemBomba(int i, int j) {
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Item_bomba"), posReal, new Quaternion(0, 180, 0 ,0)) as GameObject;
 	}
 
 	// Instanciacion de items                                           //
-	// Instancia un item botas en la posicion x, z
-	private static GameObject InstanciarItemBotas(int x, int z) {
-		int i = z;
-		int j = x;
+	// Instancia un item botas en la posicion i, j
+	private static GameObject InstanciarItemBotas(int i, int j) {
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Item_botas"), posReal, new Quaternion(0, 180, 0 ,0)) as GameObject;
 	}
 
-	// Instancia un item llama en la posicion x, z
-	private static GameObject InstanciarItemLlama(int x, int z) {
-		int i = z;
-		int j = x;
+	// Instancia un item llama en la posicion i, j
+	private static GameObject InstanciarItemLlama(int i, int j) {
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Item_llama"), posReal, new Quaternion(0, 180, 0 ,0)) as GameObject;
 	}
 
-	// Instancia un item bomba dorada en la posicion x, z
-	private static GameObject InstanciarItemBombaDorada(int x, int z) {
-		int i = z;
-		int j = x;
+	// Instancia un item bomba dorada en la posicion i, j
+	private static GameObject InstanciarItemBombaDorada(int i, int j) {
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Item_bomba_dorada"), posReal, new Quaternion(0, 180, 0 ,0)) as GameObject;
 	}
 
-	// Instancia una puerta en la posicion x, z
-	private GameObject InstanciarPuerta(int x, int z) {
-		int i = z;
-		int j = x;
+	// Instancia una puerta en la posicion i, j
+	private GameObject InstanciarPuerta(int i, int j) {
 		Vector3 posReal = GetPosicionReal(i, j);
 		return GameObject.Instantiate(Resources.Load("Prefabs/Puerta"), posReal, Quaternion.identity) as GameObject;
 	}

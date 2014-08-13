@@ -14,15 +14,15 @@ public class MovimientoJugador : Movimiento {
 	// Comprueba si hay un enemigo, un item o una puerta en la casilla actual del
 	// jugador y si no, le permite moverse.
 	void Update () {
-		if(Control.HayEnemigoEn(J, I)) {
+		if(Control.HayEnemigoEn(I, J)) {
 			Control.FinDelJuego();
-		} else if(Control.HayItemEn(J, I)) {
-			Control.ObtenerItemDe(J, I);
-		} else if(Control.SePuedePasarDeFase() && Control.HayPuertaEn(J, I)) {
+		} else if(Control.HayItemEn(I, J)) {
+			Control.ObtenerItemDe(I, J);
+		} else if(Control.SePuedePasarDeFase() && Control.HayPuertaEn(I, J)) {
 			Control.SiguienteFase();
 		} else if(!moviendose) {
 			if(Input.GetKey (KeyCode.Space)) {
-				Control.PonerBomba(j, i);
+				Control.PonerBomba(i, j);
 			}else if (Input.GetKey (KeyCode.LeftArrow) && !teclaPulsada){
 				jFinal = j - 1;
 				horaInicio = Time.time;
@@ -41,9 +41,9 @@ public class MovimientoJugador : Movimiento {
 			}
 			teclaPulsada = false;
 			if((j != jFinal) || (i != iFinal)) {
-				// Si hay un obstaculo, no moverse (xFinal y zFinal vuelve
+				// Si hay un obstaculo, no moverse (iFinal y jFinal vuelve
 				// a ser la posicion actual del jugador)
-				if(Control.HayObstaculoEn(jFinal, iFinal)) {
+				if(Control.HayObstaculoEn(iFinal, jFinal)) {
 					jFinal = j;
 					iFinal = i;
 				} else {
